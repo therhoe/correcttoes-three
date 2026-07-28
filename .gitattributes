@@ -1,0 +1,14 @@
+# Keep LF line endings (Shopify themes and the Shopify GitHub integration use LF)
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

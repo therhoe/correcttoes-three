@@ -1,0 +1,131 @@
+{%- doc -%}
+  Renders one video card for the video library grid.
+
+  @param {object} video - A metaobject of type `library_video` (or whatever the section's metaobject_type setting points to).
+
+  Expected metaobject fields:
+    - title          (single_line_text)
+    - description    (single_line_text or multi_line_text, optional)
+    - video_url      (preferred: file_reference restricted to Video; legacy:
+                      single_line_text holding a direct .mp4/.mov/.webm URL or a
+                      https://cdn.shopify.com/videos/... URL. Also accepts the
+                      field key `video_file` for backward compat.)
+    - thumbnail      (file_reference, image — optional. Falls back to the
+                      video file's preview_image when available.)
+    - tags           (list.single_line_text)
+{%- enddoc -%}
+
+{%- liquid
+  assign title = video.title.value | default: ''
+  assign description = video.description.value | default: ''
+  assign thumbnail = video.thumbnail.value
+  assign tag_list = video.tags.value
+
+  # Find the video by trying common field keys in priority order. Shopify
+  # often keeps the original auto-generated key (e.g. `video`) even after the
+  # display name is renamed, so we try several.
+  assign video_value = video.video_url.value
+  assign video_key_used = 'video_url'
+  if video_value == blank
+    assign video_value = video.video.value
+    assign video_key_used = 'video'
+  endif
+  if video_value == blank
+    assign video_value = video.video_file.value
+    assign video_key_used = 'video_file'
+  endif
+  if video_value == blank
+    assign video_value = video.file.value
+    assign video_key_used = 'file'
+  endif
+  if video_value == blank
+    assign video_value = video.media.value
+    assign video_key_used = 'media'
+  endif
+  if video_value == blank
+    assign video_key_used = 'NONE_FOUND'
+  endif
+
+  # Resolve to a URL string based on the value's shape:
+  #   - Video object (Shopify-processed) -> has .sources
+  #   - GenericFile (uploaded file)      -> has .url
+  #   - Plain string URL (legacy text)   -> use as-is
+  assign video_url = ''
+  assign video_shape = 'unknown'
+  if video_value != blank
+    if video_value.sources != blank
+      assign video_shape = 'Video'
+      assign mp4_source = video_value.sources | where: 'format', 'mp4' | first
+      if mp4_source != blank
+        assign video_url = mp4_source.url
+      else
+        assign video_url = video_value.sources.first.url
+      endif
+    elsif video_value.url != blank
+      assign video_shape = 'GenericFile'
+      assign video_url = video_value.url
+    else
+      assign video_shape = 'string'
+      assign video_url = video_value
+    endif
+
+    # Thumbnail fallback: use the video file's preview frame if none set explicitly.
+    if thumbnail == blank and video_value.preview_image != blank
+      assign thumbnail = video_value.preview_image
+    endif
+  endif
+
+  assign tags_string = ''
+  if tag_list != blank
+    assign tags_string = tag_list | join: ' '
+  endif
+-%}
+
+{%- comment -%}
+  Debug — visible via View Source. Lets us diagnose which field key Shopify is
+  actually exposing and what shape the value is. Remove once playback confirmed.
+{%- endcomment -%}
+<!-- video-library-card: key={{ video_key_used }} shape={{ video_shape }} url={{ video_url | escape }} -->
+
+
+<button
+  type="button"
+  class="video-library__card"
+  role="listitem"
+  data-video-url="{{ video_url | escape }}"
+  data-video-title="{{ title | escape }}"
+  data-tags="{{ tags_string | escape }}"
+  aria-label="Play video: {{ title | escape }}"
+>
+  <span class="video-library__card-media">
+    {%- if thumbnail != blank -%}
+      {{
+        thumbnail
+        | image_url: width: 960
+        | image_tag:
+          loading: 'lazy',
+          widths: '240, 360, 480, 640, 800, 960',
+          sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw',
+          class: 'video-library__card-image',
+          alt: title
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'video-library__card-image video-library__card-image--placeholder' }}
+    {%- endif -%}
+
+    <span class="video-library__card-play" aria-hidden="true">
+      {{- 'icon-play.svg' | inline_asset_content -}}
+    </span>
+  </span>
+
+  {%- if title != blank or description != blank -%}
+    <span class="video-library__card-body">
+      {%- if title != blank -%}
+        <span class="video-library__card-title">{{ title }}</span>
+      {%- endif -%}
+      {%- if description != blank -%}
+        <span class="video-library__card-description">{{ description }}</span>
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+</button>

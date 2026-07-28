@@ -1,0 +1,230 @@
+{%- doc -%}
+  Renders a "Details" button for a product card. When the collection section has the
+  product details drawer enabled, clicking this button opens the product information in a
+  slide-out drawer (handled by assets/product-details-drawer.js) instead of going to the PDP.
+{%- enddoc -%}
+
+{%- liquid
+  assign product = closest.product
+  assign label = block.settings.label | default: 'Details'
+-%}
+
+<div
+  class="product-details-button-block"
+  style="
+    --pdb-justify: {{ block.settings.alignment }};
+    --pdb-bg: {{ block.settings.background_color }};
+    --pdb-text: {{ block.settings.text_color }};
+    --pdb-bg-hover: {{ block.settings.background_color_hover }};
+    --pdb-text-hover: {{ block.settings.text_color_hover }};
+    --pdb-height: {{ block.settings.height }}px;
+    --pdb-radius: {{ block.settings.border_radius }}px;
+    --pdb-font-size: {{ block.settings.font_size }}px;
+    margin-block-start: {{ block.settings.margin-block-start }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  <button
+    type="button"
+    class="product-details-button{% if block.settings.full_width %} product-details-button--full{% endif %}"
+    data-product-url="{{ product.url }}"
+    {% if product == blank %}
+      disabled
+    {% endif %}
+  >
+    <span class="product-details-button__label">{{- label | escape -}}</span>
+    {%- case block.settings.icon -%}
+      {%- when 'arrow' -%}
+        <svg class="product-details-button__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+          <path
+            d="M2.5 8h11M9 3.5 13.5 8 9 12.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      {%- when 'chevron' -%}
+        <svg class="product-details-button__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+          <path
+            d="M6 3.5 10.5 8 6 12.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+    {%- endcase -%}
+  </button>
+</div>
+
+{% stylesheet %}
+  .product-details-button-block {
+    display: flex;
+    justify-content: var(--pdb-justify, stretch);
+    /* Sit above the product card's full-card overlay link so clicks register here. */
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-details-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    height: var(--pdb-height, 38px);
+    padding-inline: var(--padding-md, 1rem);
+    border: none;
+    border-radius: var(--pdb-radius, 4px);
+    background-color: var(--pdb-bg, #1a1a1a);
+    color: var(--pdb-text, #ffffff);
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-weight-medium, 500);
+    font-size: var(--pdb-font-size, 14px);
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--animation-speed, 0.2s) var(--animation-easing, ease),
+      color var(--animation-speed, 0.2s) var(--animation-easing, ease);
+  }
+
+  .product-details-button--full {
+    width: 100%;
+  }
+
+  .product-details-button:hover {
+    background-color: var(--pdb-bg-hover, var(--pdb-bg, #1a1a1a));
+    color: var(--pdb-text-hover, var(--pdb-text, #ffffff));
+  }
+
+  .product-details-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .product-details-button__icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product details button",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Details"
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "info": "Shown to the right of the label.",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "arrow", "label": "Arrow" },
+        { "value": "chevron", "label": "Chevron" }
+      ],
+      "default": "chevron"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color_hover",
+      "label": "Background (hover)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color_hover",
+      "label": "Text (hover)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Size"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.full_width == false }}"
+    },
+    {
+      "type": "range",
+      "id": "margin-block-start",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product details button"
+    }
+  ]
+}
+{% endschema %}

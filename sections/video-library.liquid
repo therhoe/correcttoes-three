@@ -1,0 +1,244 @@
+{%- liquid
+  assign metaobject_type = section.settings.metaobject_type | default: 'library_video' | strip
+  assign videos = shop.metaobjects[metaobject_type].values
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<video-library
+  class="video-library section color-{{ section.settings.color_scheme }}{% unless section.settings.full_width %} page-width{% endunless %}"
+  style="
+    --video-library-padding-block-start: {{ section.settings.padding-block-start }}px;
+    --video-library-padding-block-end: {{ section.settings.padding-block-end }}px;
+    --video-grid-columns: repeat({{ section.settings.columns }}, 1fr);
+    --video-grid-columns-tablet: repeat({{ section.settings.columns_tablet }}, 1fr);
+    --video-grid-columns-mobile: repeat({{ section.settings.columns_mobile }}, 1fr);
+    --video-grid-gap: {{ section.settings.gap }}px;
+    --video-library-align: {{ section.settings.alignment }};
+  "
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="video-library__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="video-library__filter" role="group" aria-label="{{ 'video_library.filter_aria' | t: default: 'Filter videos by tag' }}">
+      <button
+        type="button"
+        class="video-library__filter-btn video-library__filter-btn--active"
+        data-tag=""
+        aria-pressed="true"
+      >
+        {{ section.settings.all_label | default: 'All' }}
+      </button>
+      {%- for block in section.blocks -%}
+        {%- assign tag = block.settings.tag | strip -%}
+        {%- assign label = block.settings.label | default: tag -%}
+        <button
+          type="button"
+          class="video-library__filter-btn"
+          data-tag="{{ tag | escape }}"
+          aria-pressed="false"
+          {{ block.shopify_attributes }}
+        >
+          {{ label }}
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="video-library__grid" role="list">
+    {%- for video in videos -%}
+      {% render 'video-library-card', video: video %}
+    {%- else -%}
+      <p class="video-library__empty">
+        {{ section.settings.empty_message | default: 'No videos yet. Add entries to the Library Video metaobject in Shopify Admin.' }}
+      </p>
+    {%- endfor -%}
+  </div>
+
+  <p class="video-library__no-matches" hidden>
+    {{ section.settings.no_matches_message | default: 'No videos match this tag.' }}
+  </p>
+
+  <dialog-component class="video-library__dialog-component">
+    <dialog ref="dialog" class="video-library__dialog" aria-label="Video player">
+      <button
+        type="button"
+        class="video-library__dialog-close"
+        on:click="/closeDialog"
+        aria-label="Close video"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="video-library__player" data-player></div>
+    </dialog>
+  </dialog-component>
+</video-library>
+
+<link rel="stylesheet" href="{{ 'video-library.css' | asset_url }}">
+<script src="{{ 'video-library.js' | asset_url }}" type="module"></script>
+
+{% schema %}
+{
+  "name": "Video library",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Loops the Library Video metaobject (type handle: library_video). Each entry should have a video_file field (File, restricted to Video — pick from Files manager). A legacy video_url text field is still supported as a fallback. Tag buttons below filter the grid by tags stored on those entries."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "metaobject_type",
+      "label": "Metaobject type handle",
+      "default": "library_video",
+      "info": "Must match the metaobject definition's type handle in Shopify Admin."
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "\"All\" button label",
+      "default": "All"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Empty state message",
+      "default": "No videos yet. Add entries to the Library Video metaobject in Shopify Admin."
+    },
+    {
+      "type": "text",
+      "id": "no_matches_message",
+      "label": "No-matches message",
+      "default": "No videos match this tag."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Tablet columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between cards",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Filter alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tag",
+      "name": "Tag button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag value",
+          "info": "Must match a tag string stored on the video metaobject (e.g. 'barefoot-basics')."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button label",
+          "info": "Falls back to the tag value if empty."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Video library",
+      "blocks": [
+        { "type": "tag" },
+        { "type": "tag" },
+        { "type": "tag" }
+      ]
+    }
+  ]
+}
+{% endschema %}

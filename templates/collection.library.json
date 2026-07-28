@@ -1,0 +1,511 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_84BVdU": {
+      "type": "hero",
+      "blocks": {
+        "group_8jrFXB": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 18,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_gNdEXA": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 6,
+                "width": "custom",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_Dbcqcb": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p><em>Correct Toes Presents</em></p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h6",
+                    "font": "var(--font-accent--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_8r79Jc": {
+                  "type": "text",
+                  "name": "t:names.heading",
+                  "settings": {
+                    "text": "<h2>Barefoot Shoe Library</h2>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h2",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_Dbcqcb",
+                "text_8r79Jc"
+              ]
+            },
+            "text_793DRU": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Our mission is to make sure everyone can find the right pair of shoes to fit their personality, lifestyle, and most importantly, their health.</p>",
+                "width": "fit-content",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_gNdEXA",
+            "text_793DRU"
+          ]
+        }
+      },
+      "block_order": [
+        "group_8jrFXB"
+      ],
+      "name": "t:names.hero_bottom_aligned",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/d86b5e39-f5b2-4ce5-80cd-1bfd071c1009.jpg",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-5",
+        "toggle_overlay": true,
+        "overlay_color": "#00000073",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 100,
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "type_filter_qDbzij": {
+      "type": "type-filter",
+      "blocks": {
+        "type_filter_item_qFJPeX": {
+          "type": "type_filter_item",
+          "settings": {
+            "image": "shopify://shop_images/Off-White_Model_1.webp",
+            "label": "Athletic",
+            "product_type": "Athletic"
+          }
+        },
+        "type_filter_item_tfkEa4": {
+          "type": "type_filter_item",
+          "settings": {
+            "image": "shopify://shop_images/LONOSHOESFEB2025EDITED-180_copy.jpg",
+            "label": "Casual",
+            "product_type": "Casual"
+          }
+        },
+        "type_filter_item_wtYtG9": {
+          "type": "type_filter_item",
+          "settings": {
+            "image": "shopify://shop_images/wildling-shoes-tejo-blue-kids-06.jpg",
+            "label": "Kids",
+            "product_type": "Kids"
+          }
+        },
+        "type_filter_item_QWctUU": {
+          "type": "type_filter_item",
+          "settings": {
+            "image": "shopify://shop_images/GND-310318-10-H_Lifestyle_pic1.jpg",
+            "label": "Sandals",
+            "product_type": "Sandals"
+          }
+        },
+        "type_filter_item_gjbWBk": {
+          "type": "type_filter_item",
+          "settings": {
+            "image": "shopify://shop_images/wildling-shoes-arnidois-adults-06.jpg",
+            "label": "Boots",
+            "product_type": "Boots"
+          }
+        },
+        "type_filter_item_QLzbC4": {
+          "type": "type_filter_item",
+          "settings": {
+            "image": "shopify://shop_images/naturcontact-george-smart-casual-barefoot-shoes-black-on-feet_6b947030a0ebf6ac.jpg",
+            "label": "Dress",
+            "product_type": "Dress"
+          }
+        }
+      },
+      "block_order": [
+        "type_filter_item_qFJPeX",
+        "type_filter_item_tfkEa4",
+        "type_filter_item_wtYtG9",
+        "type_filter_item_QWctUU",
+        "type_filter_item_gjbWBk",
+        "type_filter_item_QLzbC4"
+      ],
+      "name": "Type filter",
+      "settings": {
+        "heading": "",
+        "circle_size": 152,
+        "gap": 60,
+        "alignment": "center",
+        "mobile_layout": "grid",
+        "columns_mobile": 3,
+        "circle_size_mobile": 124,
+        "gap_mobile": 16,
+        "full_width": false,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 48,
+        "padding-block-end": 24
+      }
+    },
+    "divider_pHmhKh": {
+      "type": "divider",
+      "name": "t:names.divider_section",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "section_width": "page-width",
+        "thickness": 1,
+        "corner_radius": "square",
+        "width_percent": 100,
+        "alignment_horizontal": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "popup_eXPwzf": {
+      "type": "popup",
+      "name": "Popup",
+      "settings": {
+        "trigger": "delay",
+        "delay_seconds": 3,
+        "scroll_percent": 50,
+        "frequency": "session",
+        "suppress_days": 7,
+        "behavior": "default",
+        "color_scheme": "scheme-3",
+        "show_image": false,
+        "show_heading": true,
+        "heading": "Barefoot Shoe Library",
+        "show_body": true,
+        "body": "<p>This is a collection of all the barefoot and natural-shaped footwear from our partners. </p><p>Just click a shoe to read more and to find the the link to partner websites where you can purchase.</p><p>We will be working to keep you up-to-date on all the latest healthy shoe options!</p>",
+        "show_name": false,
+        "name_label": "Name",
+        "name_placeholder": "Your name",
+        "show_email": true,
+        "email_label": "Email",
+        "email_placeholder": "barefoot@shoelibrary.com",
+        "show_button": true,
+        "button_label": "Send updates on new shoes",
+        "button_url": "",
+        "show_privacy": true,
+        "privacy_label": "Privacy Policy",
+        "privacy_url": "shopify://policies/privacy-policy",
+        "show_terms": true,
+        "terms_label": "Terms of Service",
+        "terms_url": "shopify://policies/terms-of-service",
+        "success_heading": "Thanks!",
+        "success_body": "<p>We will keep you posted!</p>",
+        "success_close_label": "Continue browsing"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "filters": {
+          "type": "filters",
+          "static": true,
+          "settings": {
+            "enable_filtering": true,
+            "filter_style": "vertical",
+            "filter_width": "centered",
+            "text_label_case": "default",
+            "show_swatch_label": false,
+            "show_filter_label": false,
+            "enable_sorting": true,
+            "enable_grid_density": true,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-3",
+            "padding-block-start": 8,
+            "padding-block-end": 8,
+            "padding-inline-start": 8,
+            "padding-inline-end": 8,
+            "facets_margin_bottom": 8,
+            "facets_margin_right": 20
+          },
+          "blocks": {}
+        },
+        "product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "inherit_color_scheme": false,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 8,
+            "padding-block-start": 11,
+            "padding-block-end": 11,
+            "padding-inline-start": 12,
+            "padding-inline-end": 12
+          },
+          "blocks": {
+            "card-gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 4,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_HHRt4z": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>{{ closest.product.vendor }}</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h6",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 6,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_4nY4eT": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_details_button_WRVj8D": {
+              "type": "product-details-button",
+              "name": "Product details button",
+              "settings": {
+                "label": "Details",
+                "icon": "chevron",
+                "background_color": "#1a1a1a",
+                "text_color": "#ffffff",
+                "background_color_hover": "#000000",
+                "text_color_hover": "#ffffff",
+                "height": 32,
+                "font_size": 12,
+                "border_radius": 4,
+                "full_width": false,
+                "alignment": "flex-end",
+                "margin-block-start": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "card-gallery",
+            "text_HHRt4z",
+            "product_title_4nY4eT",
+            "product_details_button_WRVj8D"
+          ]
+        }
+      },
+      "settings": {
+        "layout_type": "grid",
+        "product_card_size": "medium",
+        "mobile_product_card_size": "small",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
+        "enable_product_details_drawer": true,
+        "product_grid_width": "centered",
+        "full_width_on_mobile": true,
+        "columns_gap_horizontal": 16,
+        "columns_gap_vertical": 24,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0,
+        "color_scheme": "scheme-3",
+        "padding-block-start": 28,
+        "padding-block-end": 32
+      }
+    }
+  },
+  "order": [
+    "hero_84BVdU",
+    "type_filter_qDbzij",
+    "divider_pHmhKh",
+    "popup_eXPwzf",
+    "main"
+  ]
+}

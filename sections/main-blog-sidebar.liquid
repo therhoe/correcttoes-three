@@ -1,0 +1,676 @@
+{%- liquid
+  assign sidebar_blog = blog | default: article.blog
+  assign current_article = article | default: sidebar_blog.articles.first
+  assign posts_in_sidebar = section.settings.posts_in_sidebar | default: 50
+  assign show_date_in_sidebar = section.settings.show_date_in_sidebar
+  assign sidebar_position = section.settings.sidebar_position | default: 'left'
+  assign sticky_sidebar = section.settings.sticky_sidebar
+  assign show_date_in_body = section.settings.show_date_in_body
+  assign show_author_in_body = section.settings.show_author_in_body
+  assign group_by_tags = section.settings.group_by_tags
+  assign limited_articles = sidebar_blog.articles | limit: posts_in_sidebar
+  assign all_tags = sidebar_blog.all_tags | sort
+  assign current_tags = current_article.tags
+
+  assign sidebar_font_size = section.settings.sidebar_font_size | default: 14
+  assign sidebar_text_color = section.settings.sidebar_text_color
+  assign sidebar_bg_color = section.settings.sidebar_background_color
+  assign sidebar_title = section.settings.sidebar_title
+  assign sidebar_gap_size = section.settings.sidebar_gap | default: 80
+  assign sidebar_top_offset = section.settings.sidebar_top_offset | default: 40
+-%}
+
+{%- capture sidebar_inline_style -%}
+  --blog-sidebar-font-size: {{ sidebar_font_size }}px;
+  --blog-sidebar-gap: {{ sidebar_gap_size }}px;
+  --blog-sidebar-top-offset: {{ sidebar_top_offset }}px;
+  {%- if sidebar_bg_color.alpha > 0 %} --blog-sidebar-bg-color: {{ sidebar_bg_color }}; --blog-sidebar-padding: var(--padding-sm, 12px);{% endif -%}
+  {%- if sidebar_text_color.alpha > 0 %} --blog-sidebar-text-color: {{ sidebar_text_color }};{% endif -%}
+{%- endcapture -%}
+
+<script
+  src="{{ 'blog-sidebar.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+<blog-sidebar-component
+  data-section-id="{{ section.id }}"
+  data-sidebar-position="{{ sidebar_position }}"
+  class="blog-sidebar-section color-{{ section.settings.color_scheme }}"
+  style="{{ sidebar_inline_style }}"
+>
+  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+  <div
+    class="section spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+    <div class="blog-sidebar__wrapper">
+      <button
+      type="button"
+      class="blog-sidebar__mobile-toggle button button--secondary"
+      on:click="/toggleDrawer"
+      aria-expanded="false"
+      aria-controls="blog-sidebar-{{ section.id }}-panel"
+    >
+      <span>{{ 'blogs.sidebar.browse_posts' | t }}</span>
+    </button>
+
+    <aside
+      id="blog-sidebar-{{ section.id }}-panel"
+      class="blog-sidebar__nav {% if sticky_sidebar %}sticky-content--desktop{% endif %}"
+      data-hydration-key="blog-sidebar-list"
+      aria-label="{{ 'blogs.sidebar.post_navigation' | t }}"
+    >
+      <button
+        type="button"
+        class="blog-sidebar__close"
+        on:click="/closeDrawer"
+        aria-label="{{ 'blogs.sidebar.close_sidebar' | t }}"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      {%- if sidebar_title != blank -%}
+        <h2 class="blog-sidebar__title">{{ sidebar_title | escape }}</h2>
+      {%- endif -%}
+
+      <nav aria-label="{{ 'blogs.sidebar.post_navigation' | t }}">
+        {%- if limited_articles.size == 0 -%}
+          <p class="blog-sidebar__empty">{{ 'blogs.sidebar.no_posts' | t }}</p>
+        {%- elsif group_by_tags and all_tags.size > 0 -%}
+          {%- for tag in all_tags -%}
+            {%- assign tag_count = 0 -%}
+            {%- capture tag_items -%}
+              {%- for post in limited_articles -%}
+                {%- if post.tags contains tag -%}
+                  {%- assign tag_count = tag_count | plus: 1 -%}
+                  {%- render 'blog-sidebar-link',
+                    post: post,
+                    current_article: current_article,
+                    show_date: show_date_in_sidebar
+                  -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+
+            {%- if tag_count > 0 -%}
+              {%- assign is_active_tag = false -%}
+              {%- if current_tags contains tag -%}
+                {%- assign is_active_tag = true -%}
+              {%- endif -%}
+              <details
+                class="blog-sidebar__group"
+                {% if is_active_tag %}open declarative-open{% endif %}
+              >
+                <summary class="blog-sidebar__group-summary">
+                  <span class="blog-sidebar__group-name">{{ tag }}</span>
+                  <span class="blog-sidebar__group-count">{{ tag_count }}</span>
+                  <span class="svg-wrapper icon-caret" aria-hidden="true">
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </span>
+                </summary>
+                <ol class="blog-sidebar__list">{{ tag_items }}</ol>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- comment %} "Other" group — articles without any tags {% endcomment -%}
+          {%- assign other_count = 0 -%}
+          {%- capture other_items -%}
+            {%- for post in limited_articles -%}
+              {%- if post.tags.size == 0 -%}
+                {%- assign other_count = other_count | plus: 1 -%}
+                {%- render 'blog-sidebar-link',
+                  post: post,
+                  current_article: current_article,
+                  show_date: show_date_in_sidebar
+                -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+
+          {%- if other_count > 0 -%}
+            {%- assign is_active_other = false -%}
+            {%- if current_article and current_article.tags.size == 0 -%}
+              {%- assign is_active_other = true -%}
+            {%- endif -%}
+            <details
+              class="blog-sidebar__group"
+              {% if is_active_other %}open declarative-open{% endif %}
+            >
+              <summary class="blog-sidebar__group-summary">
+                <span class="blog-sidebar__group-name">{{ 'blogs.sidebar.untagged_group' | t }}</span>
+                <span class="blog-sidebar__group-count">{{ other_count }}</span>
+                <span class="svg-wrapper icon-caret" aria-hidden="true">
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </span>
+              </summary>
+              <ol class="blog-sidebar__list">{{ other_items }}</ol>
+            </details>
+          {%- endif -%}
+        {%- else -%}
+          <ol class="blog-sidebar__list">
+            {%- for post in limited_articles -%}
+              {%- render 'blog-sidebar-link',
+                post: post,
+                current_article: current_article,
+                show_date: show_date_in_sidebar
+              -%}
+            {%- endfor -%}
+          </ol>
+        {%- endif -%}
+      </nav>
+    </aside>
+
+    <button
+      type="button"
+      class="blog-sidebar__backdrop"
+      on:click="/closeDrawer"
+      aria-hidden="true"
+      tabindex="-1"
+    ></button>
+
+    <article
+      class="blog-sidebar__main"
+      data-hydration-key="blog-sidebar-article"
+      tabindex="-1"
+    >
+      {%- if current_article -%}
+        {%- render 'blog-sidebar-article-body',
+          article: current_article,
+          show_date: show_date_in_body,
+          show_author: show_author_in_body
+        -%}
+      {%- else -%}
+        <p class="blog-sidebar__empty">{{ 'blogs.sidebar.no_posts' | t }}</p>
+      {%- endif -%}
+    </article>
+    </div>
+  </div>
+</blog-sidebar-component>
+
+{%- if current_article -%}
+  <script type="application/ld+json">
+    {{ current_article | structured_data }}
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .blog-sidebar-section {
+    --blog-sidebar-width: 18rem;
+
+    display: block;
+    position: relative;
+  }
+
+  /* ---------- Desktop (>= 750px): two-column grid ---------- */
+  @media screen and (min-width: 750px) {
+    .blog-sidebar__wrapper {
+      display: grid;
+      grid-template-columns: var(--blog-sidebar-width) minmax(0, 1fr);
+      column-gap: var(--blog-sidebar-gap, 80px);
+      row-gap: var(--gap-xl, 32px);
+      align-items: start;
+      max-width: var(--page-width, 90rem);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .blog-sidebar-section[data-sidebar-position='right'] .blog-sidebar__wrapper {
+      grid-template-columns: minmax(0, 1fr) var(--blog-sidebar-width);
+    }
+
+    .blog-sidebar-section[data-sidebar-position='right'] .blog-sidebar__nav {
+      order: 2;
+    }
+
+    .blog-sidebar__nav {
+      width: 100%;
+      min-width: 0;
+      max-height: calc(100vh - var(--sticky-header-offset, 0px) - var(--blog-sidebar-top-offset, 40px) - var(--gap-lg, 32px));
+      overflow-y: auto;
+      background-color: var(--blog-sidebar-bg-color, transparent);
+      border-radius: var(--corner-radius-md, 8px);
+      padding: var(--blog-sidebar-padding, 0);
+    }
+
+    /* Override the theme's default sticky-content top so the sidebar
+       sits N px below the sticky header (or N px from the top of the
+       viewport if there's no sticky header). */
+    .blog-sidebar__nav.sticky-content--desktop {
+      top: calc(var(--sticky-header-offset, 0px) + var(--blog-sidebar-top-offset, 40px));
+    }
+
+    .blog-sidebar__mobile-toggle,
+    .blog-sidebar__close,
+    .blog-sidebar__backdrop {
+      display: none !important;
+    }
+  }
+
+  /* ---------- Mobile (< 750px): stacked, toggle reveals drawer ---------- */
+  @media screen and (max-width: 749px) {
+    .blog-sidebar__wrapper {
+      display: block;
+      max-width: var(--page-width, 90rem);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Floating action button — fixed to the bottom-right of the viewport,
+       stays visible while the user scrolls, hides itself while the drawer
+       is open so the close button can take over. */
+    .blog-sidebar__mobile-toggle {
+      display: inline-flex;
+      position: fixed;
+      bottom: calc(var(--padding-md, 16px) + env(safe-area-inset-bottom, 0px));
+      right: var(--padding-md, 16px);
+      margin: 0;
+      padding: var(--padding-sm, 12px) var(--padding-lg, 24px);
+      border-radius: 999px;
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+      z-index: calc(var(--layer-overlay, 80) - 2);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .blog-sidebar-section[data-drawer-open='true'] .blog-sidebar__mobile-toggle {
+      opacity: 0;
+      transform: scale(0.85);
+      pointer-events: none;
+    }
+
+    /* Sidebar lives off-canvas until the toggle is pressed. */
+    .blog-sidebar__nav {
+      position: fixed;
+      inset-block: 0;
+      inset-inline-start: 0;
+      width: min(85vw, 22rem);
+      max-width: 100%;
+      height: 100dvh;
+      padding: var(--padding-lg, 24px);
+      background: var(--blog-sidebar-bg-color, var(--color-background, #fff));
+      color: var(--color-foreground, #000);
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: var(--layer-overlay, 80);
+      overflow-y: auto;
+      visibility: hidden;
+    }
+
+    .blog-sidebar-section[data-drawer-open='true'] .blog-sidebar__nav {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    .blog-sidebar__close {
+      display: block;
+      margin-inline-start: auto;
+      margin-block-end: var(--gap-sm, 12px);
+    }
+
+    /* Backdrop sits behind the drawer, above the page content. */
+    .blog-sidebar__backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgb(0 0 0 / 0.4);
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+      z-index: calc(var(--layer-overlay, 80) - 1);
+    }
+
+    .blog-sidebar-section[data-drawer-open='true'] .blog-sidebar__backdrop {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .blog-sidebar__title {
+    margin: 0 0 var(--gap-xs, 8px);
+    padding: var(--padding-xs, 8px) var(--padding-sm, 12px) var(--gap-xs, 8px);
+    font-size: calc(var(--blog-sidebar-font-size, 14px) * 1.15);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--blog-sidebar-text-color, var(--color-foreground));
+    text-wrap: pretty;
+    border-block-end: var(--blog-sidebar-divider);
+  }
+
+  .blog-sidebar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs, 4px);
+  }
+
+  .blog-sidebar__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-3xs, 2px);
+    padding: var(--padding-xs, 8px) var(--padding-sm, 12px);
+    border-radius: var(--corner-radius-sm, 4px);
+    color: var(--blog-sidebar-text-color, rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text, 0.7)));
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+  }
+
+  .blog-sidebar__link:hover,
+  .blog-sidebar__link:focus-visible {
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+    color: var(--blog-sidebar-text-color, var(--color-foreground));
+  }
+
+  .blog-sidebar__link--active {
+    color: var(--blog-sidebar-text-color, var(--color-foreground));
+    border-left-color: var(--blog-sidebar-text-color, var(--color-foreground));
+    background-color: rgb(var(--color-foreground-rgb) / 0.04);
+  }
+
+  .blog-sidebar__link-title {
+    font-size: var(--blog-sidebar-font-size, var(--font-paragraph-size, 1rem));
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .blog-sidebar__link-date {
+    font-size: calc(var(--blog-sidebar-font-size, 14px) * 0.85);
+    color: var(--blog-sidebar-text-color, rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text, 0.6)));
+    opacity: 0.75;
+  }
+
+  .blog-sidebar__main {
+    min-width: 0;
+    outline: none;
+  }
+
+  .blog-sidebar__main:focus-visible {
+    outline: none;
+  }
+
+  .blog-sidebar__close {
+    align-self: flex-end;
+    background: transparent;
+    border: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .blog-sidebar__empty {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text, 0.6));
+    padding: var(--padding-sm, 12px);
+  }
+
+  /* Loading state — soft fade on the article body during AJAX swap */
+  blog-sidebar-component[data-loading='true'] .blog-sidebar__main {
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+  }
+
+  /* Article body internal styles */
+  .blog-sidebar-body__title {
+    font-family: var(--font-heading--family);
+    margin: 0 0 var(--margin-md, 16px);
+    text-wrap: pretty;
+  }
+
+  .blog-sidebar-body__details {
+    margin-block-end: var(--margin-lg, 24px);
+  }
+
+  .blog-sidebar-body__image {
+    margin-block-end: var(--margin-lg, 24px);
+  }
+
+  .blog-sidebar-body__image-tag {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--corner-radius-md, 8px);
+  }
+
+  .blog-sidebar-body__content {
+    max-width: var(--normal-content-width, 42rem);
+  }
+
+  /* Subtle divider colour — inherits the user's text-color when set,
+     falls back to a 15%-opacity foreground line otherwise. */
+  .blog-sidebar__nav {
+    --blog-sidebar-divider: 1px solid color-mix(in srgb, var(--blog-sidebar-text-color, var(--color-foreground)) 15%, transparent);
+  }
+
+  /* ---------- Tag groups (collapsible <details>) ---------- */
+  .blog-sidebar__group + .blog-sidebar__group {
+    margin-block-start: var(--gap-xs, 8px);
+    padding-block-start: var(--gap-xs, 8px);
+    border-block-start: var(--blog-sidebar-divider);
+  }
+
+  .blog-sidebar__group-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs, 8px);
+    padding: var(--padding-xs, 8px) var(--padding-sm, 12px);
+    cursor: pointer;
+    color: var(--blog-sidebar-text-color, var(--color-foreground));
+    font-weight: 600;
+    font-size: var(--blog-sidebar-font-size, var(--font-paragraph-size, 1rem));
+    border-radius: var(--corner-radius-sm, 4px);
+    list-style: none;
+    user-select: none;
+  }
+
+  .blog-sidebar__group-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .blog-sidebar__group-summary:hover,
+  .blog-sidebar__group-summary:focus-visible {
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .blog-sidebar__group-name {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .blog-sidebar__group-count {
+    font-size: calc(var(--blog-sidebar-font-size, 14px) * 0.85);
+    color: var(--blog-sidebar-text-color, rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text, 0.6)));
+    opacity: 0.75;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .blog-sidebar__group-summary .icon-caret {
+    width: 0.7rem;
+    height: 0.7rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .blog-sidebar__group[open] > .blog-sidebar__group-summary .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  /* Slight indent so the links read as children of the group label */
+  .blog-sidebar__group > .blog-sidebar__list {
+    padding-inline-start: var(--padding-sm, 12px);
+    margin-block: var(--gap-3xs, 2px) var(--gap-2xs, 4px);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Blog (sidebar layout)",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "group_by_tags",
+      "label": "Group posts by tag",
+      "default": true,
+      "info": "Posts with multiple tags appear under each. Untagged posts go into 'Other'."
+    },
+    {
+      "type": "range",
+      "id": "posts_in_sidebar",
+      "label": "Posts in sidebar",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "default": 50,
+      "info": "Shopify caps blog.articles at 50."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date_in_sidebar",
+      "label": "Show date in sidebar",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "sidebar_position",
+      "label": "Sidebar position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_sidebar",
+      "label": "Sticky sidebar on desktop",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sidebar appearance"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "label": "Sidebar title",
+      "info": "Optional. Shown at the top of the sidebar (and inside the mobile drawer). Leave blank to hide."
+    },
+    {
+      "type": "range",
+      "id": "sidebar_gap",
+      "label": "Gap between sidebar and article",
+      "min": 16,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "sidebar_top_offset",
+      "label": "Sticky sidebar top offset",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40,
+      "info": "Space between the top of the viewport (below any sticky header) and the sticky sidebar."
+    },
+    {
+      "type": "range",
+      "id": "sidebar_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "sidebar_text_color",
+      "label": "Text color",
+      "alpha": true,
+      "default": "#00000000",
+      "info": "Leave fully transparent to inherit the theme's default text color."
+    },
+    {
+      "type": "color",
+      "id": "sidebar_background_color",
+      "label": "Background color",
+      "alpha": true,
+      "default": "#00000000",
+      "info": "Leave fully transparent for no background."
+    },
+    {
+      "type": "header",
+      "content": "Article body"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date_in_body",
+      "label": "Show date above article",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author_in_body",
+      "label": "Show author above article",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "enabled_on": {
+    "templates": ["blog", "article"]
+  },
+  "presets": [
+    {
+      "name": "Blog (sidebar layout)"
+    }
+  ]
+}
+{% endschema %}

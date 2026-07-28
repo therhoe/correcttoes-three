@@ -1,0 +1,692 @@
+{% liquid
+  assign s = section.settings
+  assign form_id = 'PopupForm-' | append: section.id
+  assign has_form = false
+  if s.show_name or s.show_email
+    assign has_form = true
+  endif
+%}
+
+<script src="{{ 'dialog.js' | asset_url }}" type="module"></script>
+<script src="{{ 'popup-trigger.js' | asset_url }}" type="module"></script>
+
+<dialog-component
+  id="popup-{{ section.id }}"
+  class="popup"
+  data-popup-trigger
+  data-trigger="{{ s.trigger }}"
+  data-delay-seconds="{{ s.delay_seconds }}"
+  data-scroll-percent="{{ s.scroll_percent }}"
+  data-frequency="{{ s.frequency }}"
+  data-suppress-days="{{ s.suppress_days }}"
+  data-behavior="{{ s.behavior }}"
+>
+  <dialog
+    ref="dialog"
+    class="popup__content dialog-modal color-{{ s.color_scheme }}{% if s.behavior == 'drawer' %} popup__content--drawer dialog-drawer{% elsif s.behavior == 'corner' %} popup__content--corner{% endif %}"
+    scroll-lock
+    aria-labelledby="popup-heading-{{ section.id }}"
+  >
+    <button
+      ref="closeButton"
+      {% if s.behavior != 'corner' %}on:click="/closeDialog"{% endif %}
+      class="button button-unstyled close-button popup__close"
+      aria-label="{{ 'accessibility.close_dialog' | t }}"
+    >
+      {{- 'icon-close.svg' | inline_asset_content -}}
+    </button>
+
+    {%- if has_form -%}
+      {%- capture form_block -%}
+        {%- form 'customer', id: form_id, class: 'popup__form' -%}
+          {%- if form.posted_successfully? and form.id == form_id -%}
+            <div data-popup-success class="popup__success">
+              <span class="popup__success-icon svg-wrapper icon-success" aria-hidden="true">
+                {{ 'icon-checkmark.svg' | inline_asset_content }}
+              </span>
+              <h2 id="popup-heading-{{ section.id }}" class="popup__success-heading h3">
+                {{- s.success_heading | default: 'Thanks!' | escape -}}
+              </h2>
+              {%- if s.success_body != blank -%}
+                <div class="popup__success-body rte">{{ s.success_body }}</div>
+              {%- endif -%}
+              <button type="button" {% if s.behavior != 'corner' %}on:click="/closeDialog"{% endif %} class="popup__success-close button">
+                {{- s.success_close_label | default: 'Continue' -}}
+              </button>
+            </div>
+          {%- else -%}
+            <input type="hidden" name="contact[tags]" value="newsletter, popup-{{ section.id }}">
+
+            {%- if s.show_name -%}
+              <label for="PopupName-{{ section.id }}" class="visually-hidden">{{ s.name_label }}</label>
+              <input
+                id="PopupName-{{ section.id }}"
+                class="popup__input"
+                type="text"
+                name="contact[first_name]"
+                autocomplete="given-name"
+                placeholder="{{ s.name_placeholder | default: s.name_label }}"
+                aria-label="{{ s.name_label }}"
+              >
+            {%- endif -%}
+
+            {%- if s.show_email -%}
+              <label for="PopupEmail-{{ section.id }}" class="visually-hidden">{{ s.email_label }}</label>
+              <input
+                id="PopupEmail-{{ section.id }}"
+                class="popup__input"
+                type="email"
+                name="contact[email]"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                placeholder="{{ s.email_placeholder | default: s.email_label }}"
+                required
+                {% if form.errors and form.id == form_id %}
+                  autofocus
+                  aria-invalid="true"
+                  aria-describedby="PopupError-{{ section.id }}"
+                {% endif %}
+              >
+            {%- endif -%}
+
+            {%- if s.show_button -%}
+              <button type="submit" class="popup__submit button">
+                {{- s.button_label -}}
+              </button>
+            {%- endif -%}
+
+            {%- if form.errors and form.id == form_id -%}
+              <div id="PopupError-{{ section.id }}" class="popup__message popup__message--error" tabindex="-1">
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      {%- endcapture -%}
+
+      {%- assign is_success = false -%}
+      {%- if form_block contains 'data-popup-success' -%}
+        {%- assign is_success = true -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="popup__inner{% if is_success %} popup__inner--success{% endif %}">
+      {%- if is_success -%}
+        {{ form_block }}
+      {%- else -%}
+        {%- if s.show_image and s.image != blank -%}
+          <div class="popup__image-wrap">
+            {{
+              s.image
+              | image_url: width: 1200
+              | image_tag:
+                widths: '400, 600, 800, 1200',
+                sizes: '(min-width: 750px) 600px, 90vw',
+                loading: 'lazy',
+                alt: s.image.alt,
+                class: 'popup__image'
+            }}
+          </div>
+        {%- endif -%}
+
+        {%- if s.show_heading and s.heading != blank -%}
+          <h2 id="popup-heading-{{ section.id }}" class="popup__heading h3">
+            {{- s.heading | escape -}}
+          </h2>
+        {%- else -%}
+          <h2 id="popup-heading-{{ section.id }}" class="visually-hidden">
+            {{- s.heading | default: 'Popup' | escape -}}
+          </h2>
+        {%- endif -%}
+
+        {%- if s.show_body and s.body != blank -%}
+          <div class="popup__body rte">
+            {{ s.body }}
+          </div>
+        {%- endif -%}
+
+        {%- if has_form -%}
+          {{ form_block }}
+        {%- elsif s.show_button -%}
+          <a href="{{ s.button_url | default: '#' }}" class="popup__submit button">
+            {{- s.button_label -}}
+          </a>
+        {%- endif -%}
+
+        {%- if s.show_privacy or s.show_terms -%}
+          <p class="popup__legal">
+            {%- if s.show_privacy and s.privacy_url != blank -%}
+              <a href="{{ s.privacy_url }}" class="popup__legal-link">{{ s.privacy_label }}</a>
+            {%- endif -%}
+            {%- if s.show_privacy and s.show_terms -%}
+              <span class="popup__legal-sep" aria-hidden="true"> · </span>
+            {%- endif -%}
+            {%- if s.show_terms and s.terms_url != blank -%}
+              <a href="{{ s.terms_url }}" class="popup__legal-link">{{ s.terms_label }}</a>
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </dialog>
+</dialog-component>
+
+{% stylesheet %}
+  .popup {
+    display: contents;
+  }
+
+  .popup__content {
+    box-shadow: var(--shadow-popover);
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    padding: var(--padding-4xl) var(--padding-xl) var(--padding-xl);
+    width: 100%;
+    max-width: 480px;
+    max-height: var(--modal-max-height);
+
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-5xl);
+    }
+  }
+
+  .popup__content[open] {
+    animation: modalSlideInTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .popup__content.dialog-closing {
+    animation: modalSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .popup__content--drawer {
+    position: fixed;
+    border-radius: 0;
+    width: var(--sidebar-width);
+    max-width: 95vw;
+    height: 100%;
+    margin: 0 0 0 auto;
+  }
+
+  .popup__content--drawer:modal {
+    max-height: 100dvh;
+  }
+
+  .popup__content--corner {
+    position: fixed;
+    inset: auto 16px 16px auto;
+    margin: 0;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 32px);
+  }
+
+  .popup__content--corner::backdrop {
+    background: transparent;
+  }
+
+  .popup__content--corner[open] {
+    animation: popupCornerSlideIn var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .popup__content--corner.dialog-closing {
+    animation: popupCornerSlideOut var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  @keyframes popupCornerSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes popupCornerSlideOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+
+  .popup__close {
+    top: var(--margin-2xs);
+    right: var(--margin-2xs);
+    opacity: 0.8;
+    animation: none;
+  }
+
+  .popup__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+  }
+
+  .popup__image-wrap {
+    margin: calc(var(--padding-4xl) * -1) calc(var(--padding-xl) * -1) 0;
+    overflow: hidden;
+    border-top-left-radius: var(--style-border-radius-popover);
+    border-top-right-radius: var(--style-border-radius-popover);
+
+    @media screen and (min-width: 750px) {
+      margin: calc(var(--padding-5xl) * -1) calc(var(--padding-5xl) * -1) 0;
+    }
+  }
+
+  .popup__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 280px;
+    object-fit: cover;
+  }
+
+  .popup__heading {
+    margin: 0;
+  }
+
+  .popup__body {
+    margin: 0;
+  }
+
+  .popup__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+  }
+
+  .popup__input {
+    width: 100%;
+    padding: var(--padding-lg) var(--padding-xl);
+    border: 1px solid var(--color-input-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background-color: var(--color-input-background);
+    color: var(--color-input-text);
+    font: inherit;
+  }
+
+  .popup__input::placeholder {
+    color: rgb(var(--color-input-text-rgb) / var(--opacity-70));
+  }
+
+  .popup__submit {
+    width: 100%;
+    margin-top: var(--margin-xs);
+  }
+
+  .popup__message {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    font-size: var(--font-size-sm);
+  }
+
+  .popup__message--error {
+    color: var(--color-error, currentcolor);
+  }
+
+  .popup__message-text {
+    margin: 0;
+  }
+
+  .popup__legal {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  .popup__legal-link {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .popup__inner--success {
+    align-items: center;
+    text-align: center;
+    padding-block: var(--padding-2xl);
+  }
+
+  .popup__success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-md);
+    width: 100%;
+  }
+
+  .popup__success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: rgb(var(--color-foreground-rgb) / 0.08);
+    color: var(--color-foreground);
+  }
+
+  .popup__success-icon svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .popup__success-heading {
+    margin: 0;
+  }
+
+  .popup__success-body {
+    margin: 0;
+  }
+
+  .popup__success-close {
+    width: 100%;
+    margin-top: var(--margin-sm);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Popup",
+  "tag": "div",
+  "class": "popup-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Trigger"
+    },
+    {
+      "type": "select",
+      "id": "trigger",
+      "label": "When to show",
+      "options": [
+        { "value": "delay", "label": "After a delay" },
+        { "value": "scroll", "label": "After scrolling" },
+        { "value": "exit_intent", "label": "On exit intent (desktop only)" },
+        { "value": "immediate", "label": "Immediately on page load" }
+      ],
+      "default": "delay"
+    },
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "label": "Delay (seconds)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "default": 8,
+      "visible_if": "{{ section.settings.trigger == 'delay' }}"
+    },
+    {
+      "type": "range",
+      "id": "scroll_percent",
+      "label": "Scroll depth",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50,
+      "visible_if": "{{ section.settings.trigger == 'scroll' }}"
+    },
+    {
+      "type": "header",
+      "content": "Frequency"
+    },
+    {
+      "type": "select",
+      "id": "frequency",
+      "label": "How often to show",
+      "options": [
+        { "value": "session", "label": "Once per session" },
+        { "value": "dismiss_days", "label": "Suppress for N days after dismiss" },
+        { "value": "session_plus_dismiss", "label": "Once per session + suppress on dismiss" },
+        { "value": "always", "label": "Every page load (testing)" }
+      ],
+      "default": "session_plus_dismiss"
+    },
+    {
+      "type": "range",
+      "id": "suppress_days",
+      "label": "Suppress for (days)",
+      "min": 1,
+      "max": 90,
+      "step": 1,
+      "unit": "d",
+      "default": 7,
+      "visible_if": "{{ section.settings.frequency == 'dismiss_days' or section.settings.frequency == 'session_plus_dismiss' }}"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "behavior",
+      "label": "Style",
+      "options": [
+        { "value": "default", "label": "Centered modal" },
+        { "value": "corner", "label": "Bottom right corner" },
+        { "value": "drawer", "label": "Side drawer" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "visible_if": "{{ section.settings.show_image }}"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join our list",
+      "visible_if": "{{ section.settings.show_heading }}"
+    },
+    {
+      "type": "header",
+      "content": "Body text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_body",
+      "label": "Show body",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Get the latest news and a discount on your first order.</p>",
+      "visible_if": "{{ section.settings.show_body }}"
+    },
+    {
+      "type": "header",
+      "content": "Name input"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_name",
+      "label": "Show name field",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Label",
+      "default": "Name",
+      "visible_if": "{{ section.settings.show_name }}"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Placeholder",
+      "default": "Your name",
+      "visible_if": "{{ section.settings.show_name }}"
+    },
+    {
+      "type": "header",
+      "content": "Email input"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Label",
+      "default": "Email",
+      "visible_if": "{{ section.settings.show_email }}"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Placeholder",
+      "default": "you@example.com",
+      "visible_if": "{{ section.settings.show_email }}"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe",
+      "visible_if": "{{ section.settings.show_button }}"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link (only used when no name/email fields)",
+      "visible_if": "{{ section.settings.show_button and section.settings.show_email == false and section.settings.show_name == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Privacy policy link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_privacy",
+      "label": "Show privacy link",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "privacy_label",
+      "label": "Link text",
+      "default": "Privacy Policy",
+      "visible_if": "{{ section.settings.show_privacy }}"
+    },
+    {
+      "type": "url",
+      "id": "privacy_url",
+      "label": "Link URL",
+      "visible_if": "{{ section.settings.show_privacy }}"
+    },
+    {
+      "type": "header",
+      "content": "Terms of service link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_terms",
+      "label": "Show terms link",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "terms_label",
+      "label": "Link text",
+      "default": "Terms of Service",
+      "visible_if": "{{ section.settings.show_terms }}"
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "Link URL",
+      "visible_if": "{{ section.settings.show_terms }}"
+    },
+    {
+      "type": "header",
+      "content": "Success state",
+      "info": "Shown after a visitor successfully submits the form. Only applies when name or email fields are enabled."
+    },
+    {
+      "type": "text",
+      "id": "success_heading",
+      "label": "Heading",
+      "default": "Thanks!"
+    },
+    {
+      "type": "richtext",
+      "id": "success_body",
+      "label": "Body",
+      "default": "<p>You're all signed up. Check your inbox for a confirmation.</p>"
+    },
+    {
+      "type": "text",
+      "id": "success_close_label",
+      "label": "Close button label",
+      "default": "Continue browsing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popup",
+      "category": "t:categories.forms",
+      "settings": {
+        "trigger": "delay",
+        "delay_seconds": 8,
+        "frequency": "session_plus_dismiss",
+        "suppress_days": 7
+      }
+    }
+  ]
+}
+{% endschema %}

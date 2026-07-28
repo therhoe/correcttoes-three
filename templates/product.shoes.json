@@ -1,0 +1,401 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "media_presentation": "grid",
+            "media_columns": "two",
+            "image_gap": 4,
+            "large_first_image": true,
+            "icons_style": "none",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "thumbnails",
+            "thumbnail_position": "bottom",
+            "thumbnail_width": 72,
+            "thumbnail_radius": 4,
+            "aspect_ratio": "1",
+            "constrain_to_viewport": true,
+            "media_fit": "contain",
+            "media_radius": 0,
+            "extend_media": false,
+            "zoom": true,
+            "video_loop": false,
+            "hide_variants": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 28,
+            "sticky_details_desktop": true,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_icgrde": {
+              "type": "group",
+              "name": "Header",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_xrnftG": {
+                  "type": "text",
+                  "name": "Product title",
+                  "settings": {
+                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h3",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "price_tVjtKg": {
+                  "type": "price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "custom",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font": "var(--font-heading--family)",
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground)",
+                    "padding-block-start": 4,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_xrnftG",
+                "price_tVjtKg"
+              ]
+            },
+            "judge_me_reviews_preview_badge_tX8Ygp": {
+              "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+              "disabled": true,
+              "settings": {}
+            },
+            "review_xmm3Bi": {
+              "type": "review",
+              "name": "t:names.product_review_stars",
+              "settings": {
+                "stars_style": "shaded",
+                "show_number": true,
+                "rating_color": "primary",
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "divider_VJhene": {
+              "type": "_divider",
+              "name": "t:names.divider",
+              "settings": {
+                "thickness": 1,
+                "corner_radius": "square",
+                "width_percent": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "text_aEtTtq": {
+              "type": "text",
+              "name": "Product description",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_icgrde",
+            "judge_me_reviews_preview_badge_tX8Ygp",
+            "review_xmm3Bi",
+            "divider_VJhene",
+            "text_aEtTtq"
+          ]
+        }
+      },
+      "settings": {
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": true,
+        "limit_details_width": false,
+        "gap": 48,
+        "enable_sticky_add_to_cart": true,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "product_recommendations_qggXJq": {
+      "type": "product-recommendations",
+      "blocks": {
+        "text_cbcgyb": {
+          "type": "text",
+          "name": "t:names.header",
+          "settings": {
+            "text": "<h3>You may also like </h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_DNizbJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_M7MJkb": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_gLWgA6": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_DNizbJ",
+            "product_title_M7MJkb",
+            "price_gLWgA6"
+          ]
+        }
+      },
+      "block_order": [
+        "text_cbcgyb"
+      ],
+      "name": "t:names.product_recommendations",
+      "settings": {
+        "product": "{{ closest.product }}",
+        "recommendation_type": "related",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 6,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 24,
+        "rows_gap": 24,
+        "icons_style": "chevron_large",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 100
+      }
+    },
+    "custom_liquid_3D3imV": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<!--\n  Correct Toes — Product Page Size Finder Widget\n  Paste this entire block into a Custom Liquid block on your product page.\n\n  Before pasting into your LIVE theme, edit the constant at the top of\n  the <script> block:\n    - SIZE_GUIDE_URL : link to your size guide PDF / page\n\n  Single-file, no dependencies, scoped under .ct-size-finder so it can't\n  collide with theme CSS.\n-->\n\n<style>\n  .ct-size-finder {\n    /* Brand knobs — tweak to match the new theme */\n    --ct-accent: #d45511;\n    --ct-accent-soft: #fff3ee;\n    --ct-panel: #ffffff;\n    --ct-text: #000000;\n    --ct-muted: #6b6b6b;\n    --ct-border: #d8d2c8;\n    --ct-radius: 4px;\n\n    font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,\n                 Helvetica, Arial, sans-serif;\n    color: var(--ct-text);\n    font-size: 16px;\n    line-height: 1.5;\n    max-width: 560px;\n    margin: 0.5rem 0 0;\n  }\n  .ct-size-finder *,\n  .ct-size-finder *::before,\n  .ct-size-finder *::after { box-sizing: border-box; }\n\n  /* Collapsed-state pill button */\n  .ct-size-finder > summary {\n    list-style: none;\n    display: inline-flex;\n    align-items: center;\n    gap: 0.5rem;\n    cursor: pointer;\n    padding: 0.75rem 1.25rem;\n    background: var(--ct-accent);\n    color: #fff;\n    border-radius: 4px;\n    font-weight: 600;\n    font-size: 0.95rem;\n    user-select: none;\n    transition: filter 0.15s ease;\n  }\n  .ct-size-finder > summary:hover { filter: brightness(1.05); }\n  .ct-size-finder > summary::-webkit-details-marker { display: none; }\n  .ct-size-finder > summary::after {\n    content: \"→\";\n    display: inline-block;\n    transition: transform 0.2s ease;\n  }\n  .ct-size-finder[open] > summary::after { transform: rotate(90deg); }\n\n  /* Expanded panel */\n  .ct-size-finder__panel {\n    margin-top: 0.75rem;\n    background: var(--ct-panel);\n    border: 1px solid var(--ct-border);\n    border-radius: var(--ct-radius);\n    padding: 1.25rem;\n  }\n\n  .ct-size-finder__grid {\n    display: grid;\n    grid-template-columns: 1fr;\n    gap: 0.875rem;\n  }\n  @media (min-width: 600px) {\n    .ct-size-finder__grid { grid-template-columns: 1fr 1fr; }\n  }\n\n  .ct-size-finder__field {\n    display: flex;\n    flex-direction: column;\n    gap: 0.35rem;\n  }\n  .ct-size-finder__field label {\n    font-size: 0.78rem;\n    font-weight: 700;\n    color: var(--ct-muted);\n    text-transform: uppercase;\n    letter-spacing: 0.06em;\n  }\n\n  .ct-size-finder select {\n    appearance: none;\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    background-color: #fff;\n    color: var(--ct-text);\n    border: 1px solid var(--ct-border);\n    border-radius: 4px;\n    padding: 0.6rem 2rem 0.6rem 0.75rem;\n    font: inherit;\n    cursor: pointer;\n    background-image: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%232a2a2a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>\");\n    background-repeat: no-repeat;\n    background-position: right 0.75rem center;\n  }\n  .ct-size-finder select:disabled {\n    background-color: #ece8e2;\n    cursor: not-allowed;\n    opacity: 0.65;\n  }\n  .ct-size-finder select:focus {\n    outline: 2px solid var(--ct-accent);\n    outline-offset: 1px;\n  }\n\n  .ct-size-finder__submit {\n    margin-top: 1.1rem;\n    width: 100%;\n    padding: 0.85rem 1.25rem;\n    background: var(--ct-accent);\n    color: #fff;\n    border: none;\n    border-radius: 4px;\n    font: inherit;\n    font-weight: 600;\n    cursor: pointer;\n    transition: opacity 0.15s ease, filter 0.15s ease;\n  }\n  .ct-size-finder__submit:hover:not(:disabled) { filter: brightness(1.05); }\n  .ct-size-finder__submit:disabled { opacity: 0.4; cursor: not-allowed; }\n\n  /* Spinner */\n  .ct-size-finder__spinner {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    gap: 1rem;\n    padding: 1.5rem 1rem;\n    text-align: center;\n  }\n  .ct-size-finder__ring {\n    width: 42px;\n    height: 42px;\n    border: 3px solid var(--ct-border);\n    border-top-color: var(--ct-accent);\n    border-radius: 4px;\n    animation: ct-spin 0.9s linear infinite;\n  }\n  @keyframes ct-spin { to { transform: rotate(360deg); } }\n  .ct-size-finder__spinner-caption {\n    color: var(--ct-muted);\n    font-size: 0.95rem;\n    min-height: 1.4em; /* prevent layout jump when text length changes */\n  }\n\n  /* Result */\n  .ct-size-finder__result {\n    text-align: center;\n    padding: 0.5rem 0;\n  }\n  .ct-size-finder__result-label {\n    font-size: 0.78rem;\n    font-weight: 700;\n    color: var(--ct-muted);\n    text-transform: uppercase;\n    letter-spacing: 0.08em;\n  }\n  .ct-size-finder__result-size {\n    font-size: 2.25rem;\n    font-weight: 700;\n    line-height: 1.1;\n    margin: 0.4rem 0 0.6rem;\n    color: var(--ct-text);\n  }\n  .ct-size-finder__result-because {\n    font-size: 0.95rem;\n    color: var(--ct-muted);\n  }\n\n  .ct-size-finder__note {\n    margin-top: 1.25rem;\n    padding: 1rem 1.1rem;\n    background: #fff;\n    border: 1px solid var(--ct-border);\n    border-radius: 4px;\n    font-size: 0.92rem;\n    line-height: 1.55;\n    color: var(--ct-text);\n  }\n  .ct-size-finder__note a {\n    color: var(--ct-accent);\n    font-weight: 600;\n  }\n  .ct-size-finder__note code {\n    display: inline-block;\n    background: var(--ct-accent-soft);\n    border: 1px dashed var(--ct-accent);\n    padding: 0.15rem 0.5rem;\n    border-radius: 4px;\n    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;\n    font-size: 0.92em;\n    color: var(--ct-accent);\n    font-weight: 600;\n  }\n\n  .ct-size-finder__again {\n    display: block;\n    margin: 1rem auto 0;\n    background: transparent;\n    border: none;\n    color: var(--ct-muted);\n    cursor: pointer;\n    font: inherit;\n    font-size: 0.9rem;\n    text-decoration: underline;\n  }\n  .ct-size-finder__again:hover { color: var(--ct-text); }\n\n  .ct-size-finder [hidden] { display: none !important; }\n</style>\n\n<details class=\"ct-size-finder\">\n  <summary>Find your size</summary>\n  <div class=\"ct-size-finder__panel\">\n\n    <form class=\"ct-size-finder__form\" novalidate>\n      <div class=\"ct-size-finder__grid\">\n        <div class=\"ct-size-finder__field\">\n          <label for=\"ct-shoe\">Usual shoe type</label>\n          <select id=\"ct-shoe\" required>\n            <option value=\"\" disabled selected>Choose…</option>\n            <option>Sneakers</option>\n            <option>Boots</option>\n            <option>Sandals</option>\n            <option>Dress shoes</option>\n            <option>Minimalist / barefoot</option>\n            <option>Other</option>\n          </select>\n        </div>\n\n        <div class=\"ct-size-finder__field\">\n          <label for=\"ct-cond\">Foot condition</label>\n          <select id=\"ct-cond\" required>\n            <option value=\"\" disabled selected>Choose…</option>\n            <option>Bunions</option>\n            <option>Hammertoes</option>\n            <option>Plantar fasciitis</option>\n            <option>Neuroma</option>\n            <option>Overlapping toes</option>\n            <option>General comfort</option>\n          </select>\n        </div>\n\n        <div class=\"ct-size-finder__field\">\n          <label for=\"ct-system\">Sizing system</label>\n          <select id=\"ct-system\" required>\n            <option value=\"\" disabled selected>Choose…</option>\n            <option value=\"us-w\">US Women's</option>\n            <option value=\"us-m\">US Men's</option>\n            <option value=\"eu\">EU</option>\n          </select>\n        </div>\n\n        <div class=\"ct-size-finder__field\">\n          <label for=\"ct-size\">Your size</label>\n          <select id=\"ct-size\" required disabled>\n            <option value=\"\" disabled selected>Pick sizing first</option>\n          </select>\n        </div>\n      </div>\n\n      <button type=\"submit\" class=\"ct-size-finder__submit\" disabled>\n        Get my recommendation\n      </button>\n    </form>\n\n    <div class=\"ct-size-finder__spinner\" hidden role=\"status\" aria-live=\"polite\">\n      <div class=\"ct-size-finder__ring\" aria-hidden=\"true\"></div>\n      <div class=\"ct-size-finder__spinner-caption\">Analyzing toe spread…</div>\n    </div>\n\n    <div class=\"ct-size-finder__result-wrap\" hidden role=\"status\" aria-live=\"polite\">\n      <div class=\"ct-size-finder__result\">\n        <div class=\"ct-size-finder__result-label\">We recommend</div>\n        <div class=\"ct-size-finder__result-size\"></div>\n        <div class=\"ct-size-finder__result-because\"></div>\n      </div>\n      <!-- Shown when the picked size is flagged as in-between -->\n      <div class=\"ct-size-finder__note ct-size-finder__note--between\" hidden>\n        It looks like you might be in between sizes.\n        <a href=\"#\" target=\"_blank\" rel=\"noopener\">Download our size guide</a>\n        to double-check, then pick whichever size you think fits best.\n        If you decide later you need the other one, we'll exchange it\n        free of charge — no questions asked.\n      </div>\n      <!-- Shown when the picked size is a clean match -->\n      <div class=\"ct-size-finder__note ct-size-finder__note--clean\" hidden>\n        We want to make sure you get the right fit. If you ever need to\n        exchange for a different size later, we'll do it free of charge —\n        no questions asked.\n      </div>\n      <button type=\"button\" class=\"ct-size-finder__again\">← Start over</button>\n    </div>\n\n  </div>\n</details>\n\n<script>\n(function () {\n  // ─── EDIT THIS BEFORE PASTING INTO YOUR LIVE THEME ───────────────\n  var SIZE_GUIDE_URL = 'https://cdn.shopify.com/s/files/1/0733/8160/9688/files/DFI_Correct-Toes-Sizing-Guide-With-XS.pdf';\n  // ─────────────────────────────────────────────────────────────────\n\n  // `flag: true` → also render the between-sizes note. The `result`\n  // is still the recommended size. Plain strings are clean (no note).\n  var SIZE_MAP = {\n    'us-w': {\n      '5':   'XS', '5.5': 'XS', '6':   'XS',\n      '6.5': { result: 'S', flag: true },\n      '7':   'S',  '7.5': 'S',  '8':   'M',\n      '8.5': 'M',\n      '9':   { result: 'M', flag: true },\n      '9.5': 'M',  '10':  'M',  '10.5':'M',\n      '11':  'M',  '11.5':'M',  '12':  'M',\n      '12.5':{ result: 'L', flag: true },\n      '13':  { result: 'L', flag: true },\n      '13.5':'L',  '14':  'L'\n    },\n    'us-m': {\n      '6':   'S',  '6.5': 'S',\n      '7':   { result: 'M', flag: true },\n      '7.5': 'M',  '8':   'M',  '8.5': 'M',\n      '9':   'M',  '9.5': 'M',  '10':  'M',  '10.5':'M',\n      '11':  { result: 'L', flag: true },\n      '11.5':{ result: 'L', flag: true },\n      '12':  'L',  '12.5':'L',  '13':  'L'\n    },\n    'eu': {\n      '32':'XS','33':'XS','34':'XS','35':'XS','36':'XS',\n      '37':{ result: 'S', flag: true },\n      '38':'S','39':'S',\n      '40':{ result: 'M', flag: true },\n      '41':'M','42':'M','43':'M',\n      '44':{ result: 'M', flag: true },\n      '45':{ result: 'L', flag: true },\n      '46':'L','47':'L'\n    }\n  };\n\n  var SYSTEM_LABEL = {\n    'us-w': \"US Women's\",\n    'us-m': \"US Men's\",\n    'eu':   'EU'\n  };\n\n  // Compact form used for the cart attribute (and the resulting order tag):\n  // 'us-w' + '9'   → 'W9'\n  // 'us-m' + '11'  → 'M11'\n  // 'eu'   + '41'  → '41'\n  var SYSTEM_SHORT = {\n    'us-w': 'W',\n    'us-m': 'M',\n    'eu':   ''\n  };\n  function shortSize(system, size) {\n    return SYSTEM_SHORT[system] + size;\n  }\n\n  var RESULT_NAME = {\n    'XS': 'Extra Small',\n    'S':  'Small',\n    'M':  'Medium',\n    'L':  'Large'\n  };\n\n  var SPINNER_MESSAGES = [\n    'Analyzing toe spread…',\n    'Cross-referencing fit data…',\n    'Finalizing your recommendation…'\n  ];\n  var SPINNER_TOTAL_MS = 1800;\n  var SPINNER_STEP_MS  = 600;\n\n  var root = document.querySelector('.ct-size-finder');\n  if (!root) return;\n  var $ = function (sel) { return root.querySelector(sel); };\n\n  var form    = $('.ct-size-finder__form');\n  var submit  = $('.ct-size-finder__submit');\n  var spinner = $('.ct-size-finder__spinner');\n  var caption = $('.ct-size-finder__spinner-caption');\n  var wrap    = $('.ct-size-finder__result-wrap');\n  var sizeEl  = $('.ct-size-finder__result-size');\n  var because = $('.ct-size-finder__result-because');\n  var noteBetween = $('.ct-size-finder__note--between');\n  var noteClean   = $('.ct-size-finder__note--clean');\n  var noteA       = noteBetween.querySelector('a');\n  var again       = $('.ct-size-finder__again');\n\n  var sShoe = $('#ct-shoe');\n  var sCond = $('#ct-cond');\n  var sSys  = $('#ct-system');\n  var sSize = $('#ct-size');\n\n  function sortedSizes(system) {\n    return Object.keys(SIZE_MAP[system]).sort(function (a, b) {\n      return parseFloat(a) - parseFloat(b);\n    });\n  }\n\n  // When sizing system changes, repopulate the size dropdown.\n  sSys.addEventListener('change', function () {\n    var sys = sSys.value;\n    sSize.innerHTML = '<option value=\"\" disabled selected>Choose…</option>';\n    if (sys && SIZE_MAP[sys]) {\n      sortedSizes(sys).forEach(function (sz) {\n        var opt = document.createElement('option');\n        opt.value = sz;\n        opt.textContent = sz;\n        sSize.appendChild(opt);\n      });\n      sSize.disabled = false;\n    } else {\n      sSize.disabled = true;\n    }\n    updateSubmit();\n  });\n\n  [sShoe, sCond, sSys, sSize].forEach(function (el) {\n    el.addEventListener('change', updateSubmit);\n  });\n\n  function updateSubmit() {\n    submit.disabled = !(sShoe.value && sCond.value && sSys.value && sSize.value);\n  }\n\n  function recommend(system, size) {\n    var entry = SIZE_MAP[system] && SIZE_MAP[system][size];\n    if (entry == null) return null;\n    if (typeof entry === 'string') return { result: entry, flag: false };\n    return entry;\n  }\n\n  var cycleHandle = null;\n\n  function showSpinner() {\n    form.hidden = true;\n    spinner.hidden = false;\n    var i = 0;\n    caption.textContent = SPINNER_MESSAGES[0];\n    cycleHandle = setInterval(function () {\n      i = (i + 1) % SPINNER_MESSAGES.length;\n      caption.textContent = SPINNER_MESSAGES[i];\n    }, SPINNER_STEP_MS);\n  }\n\n  function hideSpinner() {\n    spinner.hidden = true;\n    if (cycleHandle) { clearInterval(cycleHandle); cycleHandle = null; }\n  }\n\n  function showResult(rec, system, size) {\n    sizeEl.textContent = RESULT_NAME[rec.result];\n    because.textContent = 'Based on your input.';\n    if (rec.flag) {\n      noteA.href = SIZE_GUIDE_URL;\n      noteBetween.hidden = false;\n      noteClean.hidden = true;\n    } else {\n      noteBetween.hidden = true;\n      noteClean.hidden = false;\n    }\n    wrap.hidden = false;\n  }\n\n  // Fire-and-forget: write the choice to cart attributes so it lands on\n  // the order. Shopify Flow can then read these and apply tags.\n  // Silently no-ops outside Shopify (local preview, etc.).\n  function saveToCart(rec, system, size, shoe, cond) {\n    try {\n      fetch('/cart/update.js', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({\n          attributes: {\n            'Recommended Toe Spacer Size': RESULT_NAME[rec.result],\n            'Shopper-Selected Foot Size': shortSize(system, size),\n            'Usual Shoe Type': shoe,\n            'Foot Condition':  cond\n          }\n        })\n      }).catch(function () { /* offline / non-Shopify preview */ });\n    } catch (_) { /* no fetch / sandboxed */ }\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    var sys = sSys.value;\n    var sz  = sSize.value;\n    var rec = recommend(sys, sz);\n    if (!rec) return;\n\n    showSpinner();\n    // Write to cart during the fake wait — the network call rides along\n    // with the spinner so the result lands instantly when revealed.\n    saveToCart(rec, sys, sz, sShoe.value, sCond.value);\n    setTimeout(function () {\n      hideSpinner();\n      showResult(rec, sys, sz);\n    }, SPINNER_TOTAL_MS);\n  });\n\n  again.addEventListener('click', function () {\n    wrap.hidden = true;\n    form.hidden = false;\n    // We intentionally keep the user's existing picks so they can\n    // tweak one dropdown instead of redoing the whole form.\n  });\n})();\n</script>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product_recommendations_qggXJq",
+    "custom_liquid_3D3imV"
+  ]
+}

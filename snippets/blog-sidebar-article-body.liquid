@@ -1,0 +1,65 @@
+{% comment %}
+  Renders a single article (title, meta, featured image, body) for the
+  docs-style blog sidebar layout.
+
+  This intentionally duplicates the markup of
+  blocks/_blog-post-content.liquid, blocks/_blog-post-featured-image.liquid,
+  and blocks/_blog-post-info-text.liquid — those blocks are template-bound
+  and pull their data from block context, not from snippet arguments.
+  If you change the source blocks, mirror the change here.
+
+  @param {object} article - The article to render.
+  @param {boolean} [show_date=true]
+  @param {boolean} [show_author=false]
+{% endcomment %}
+
+{%- liquid
+  if show_date == nil
+    assign show_date = true
+  endif
+  if show_author == nil
+    assign show_author = false
+  endif
+-%}
+
+{%- if article -%}
+  <header class="blog-sidebar-body__header">
+    <h1 class="blog-sidebar-body__title">{{ article.title }}</h1>
+
+    {%- if show_date or show_author -%}
+      <div class="blog-post-details blog-sidebar-body__details">
+        {%- if show_date -%}
+          <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+        {%- endif -%}
+        {%- if show_date and show_author -%}
+          <span>{{ 'content.blog_details_separator' | t }}</span>
+        {%- endif -%}
+        {%- if show_author -%}
+          <span>{{ article.author }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </header>
+
+  {%- if article.image -%}
+    <div class="blog-sidebar-body__image">
+      {{
+        article.image
+        | image_url: width: 3840
+        | image_tag:
+          width: article.image.width,
+          widths: '240, 352, 832, 1200, 1600, 1920, 2560, 3840',
+          height: article.image.height,
+          sizes: '(min-width: 750px) calc(100vw - var(--blog-sidebar-width, 18rem) - var(--blog-sidebar-gap, 32px)), 100vw',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: article.image.alt,
+          class: 'blog-sidebar-body__image-tag'
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="blog-post-content rte blog-sidebar-body__content">
+    <rte-formatter>{{ article.content }}</rte-formatter>
+  </div>
+{%- endif -%}

@@ -1,0 +1,176 @@
+{%- doc -%}
+  Renders one retail partner card for the retail library grid.
+
+  @param {object} entry - A metaobject of type `library_retail` (or whatever the section's metaobject_type setting points to).
+  @param {number} index - 0-based index within the grid (used as the drawer template id).
+
+  Expected metaobject fields:
+    - name           (single_line_text)
+    - description    (multi_line_text, optional)
+    - image_1        (file_reference, image)
+    - image_2        (file_reference, image, optional — enables hover swap)
+    - image_3        (file_reference, image, optional — drawer only)
+    - hours          (single_line_text, optional)
+    - city           (single_line_text)
+    - state          (single_line_text, optional)
+    - country        (single_line_text)
+{%- enddoc -%}
+
+{%- liquid
+  assign name = entry.name.value | default: ''
+  assign description = entry.description.value | default: ''
+  assign hours = entry.hours.value | default: ''
+  assign city = entry.city.value | default: ''
+  assign state = entry.state.value | default: ''
+  assign country = entry.country.value | default: ''
+
+  assign image_1 = entry.image_1.value
+  assign image_2 = entry.image_2.value
+  assign image_3 = entry.image_3.value
+
+  assign location_line = ''
+  if city != blank
+    assign location_line = city
+  endif
+  if state != blank
+    if location_line != blank
+      assign location_line = location_line | append: ', ' | append: state
+    else
+      assign location_line = state
+    endif
+  endif
+  if country != blank
+    if location_line != blank
+      assign location_line = location_line | append: ' — ' | append: country
+    else
+      assign location_line = country
+    endif
+  endif
+
+  assign search_payload = name | append: ' ' | append: city | append: ' ' | append: state | append: ' ' | append: country | append: ' ' | append: description | downcase | strip
+-%}
+
+<div
+  class="resource-card retail-card"
+  data-resource-type="metaobject"
+  data-name="{{ name | escape }}"
+  data-city="{{ city | escape }}"
+  data-state="{{ state | escape }}"
+  data-country="{{ country | escape }}"
+  data-search="{{ search_payload | escape }}"
+  data-index="{{ index }}"
+  role="listitem"
+>
+  <button
+    type="button"
+    class="resource-card__link retail-card__trigger"
+    aria-haspopup="dialog"
+    aria-label="{{ 'View partner: ' | append: name | escape }}"
+    data-card-trigger
+  >
+    <span class="visually-hidden">{{ name }}</span>
+  </button>
+
+  <div
+    class="resource-card__media retail-card__media"
+    style="--resource-card-aspect-ratio: var(--retail-card-aspect-ratio, 1);"
+  >
+    {%- if image_1 != blank -%}
+      {{
+        image_1
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'lazy',
+          class: 'resource-card__image',
+          widths: '240, 352, 480, 640, 832, 1200',
+          sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw',
+          alt: name
+      }}
+      {%- if image_2 != blank -%}
+        {{
+          image_2
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            class: 'resource-card__image resource-card__image--secondary',
+            widths: '240, 352, 480, 640, 832, 1200',
+            sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw',
+            alt: ''
+        }}
+      {%- endif -%}
+    {%- else -%}
+      <div aria-hidden="true" class="resource-card__image-placeholder">
+        {{- name | truncate: 60 -}}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="resource-card__content retail-card__content">
+    {%- if name != blank -%}
+      <p class="resource-card__title paragraph retail-card__name">{{ name }}</p>
+    {%- endif -%}
+    {%- if location_line != blank -%}
+      <p class="retail-card__meta retail-card__meta--location">{{ location_line }}</p>
+    {%- endif -%}
+    {%- if hours != blank -%}
+      <p class="retail-card__meta retail-card__meta--hours">{{ hours }}</p>
+    {%- endif -%}
+  </div>
+
+  <template data-payload>
+    <div class="retail-details">
+      <div class="retail-details__gallery">
+        {%- if image_1 != blank -%}
+          {{
+            image_1
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'lazy',
+              class: 'retail-details__image retail-details__image--primary',
+              widths: '480, 720, 960, 1200, 1600',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              alt: name
+          }}
+        {%- endif -%}
+        {%- if image_2 != blank -%}
+          {{
+            image_2
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              class: 'retail-details__image retail-details__image--secondary',
+              widths: '360, 540, 720, 960, 1200',
+              sizes: '(min-width: 990px) 25vw, 50vw',
+              alt: ''
+          }}
+        {%- endif -%}
+        {%- if image_3 != blank -%}
+          {{
+            image_3
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              class: 'retail-details__image retail-details__image--tertiary',
+              widths: '360, 540, 720, 960, 1200',
+              sizes: '(min-width: 990px) 25vw, 50vw',
+              alt: ''
+          }}
+        {%- endif -%}
+      </div>
+      <div class="retail-details__body">
+        {%- if name != blank -%}
+          <h2 class="retail-details__name">{{ name }}</h2>
+        {%- endif -%}
+        {%- if location_line != blank -%}
+          <p class="retail-details__location">{{ location_line }}</p>
+        {%- endif -%}
+        {%- if hours != blank -%}
+          <p class="retail-details__hours"><span class="retail-details__label">Hours</span> {{ hours }}</p>
+        {%- endif -%}
+        {%- if description != blank -%}
+          <div class="retail-details__description">{{ description | newline_to_br }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </template>
+</div>

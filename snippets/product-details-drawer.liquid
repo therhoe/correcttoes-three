@@ -1,0 +1,213 @@
+{%- doc -%}
+  Renders the single shared "Product details" slide-out drawer for a collection page.
+  Rendered once by sections/main-collection.liquid when the drawer is enabled.
+
+  The drawer content is populated client-side by assets/product-details-drawer.js, which
+  fetches a product page, extracts its `.product-information` block, removes the buy
+  buttons, and injects it into `[ref="drawerContent"]`.
+{%- enddoc -%}
+
+<product-details-drawer
+  class="product-details-drawer"
+  data-skip-subtree-update="true"
+>
+  <dialog
+    ref="dialog"
+    class="product-details-drawer__dialog dialog-modal dialog-drawer color-{{ settings.popover_color_scheme }}"
+    aria-label="Product details"
+    scroll-lock
+  >
+    <div class="product-details-drawer__header">
+      <button
+        ref="closeButton"
+        type="button"
+        on:click="/closeDialog"
+        class="button button-unstyled close-button product-details-drawer__close"
+        aria-label="{{ 'actions.close_dialog' | t }}"
+      >
+        <span class="svg-wrapper">
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </span>
+      </button>
+    </div>
+
+    <div
+      ref="drawerContent"
+      class="product-details-drawer__content"
+    >
+      <div
+        ref="loading"
+        class="product-details-drawer__loading"
+        hidden
+      >
+        <span class="product-details-drawer__spinner" aria-hidden="true"></span>
+        <span class="visually-hidden">Loading</span>
+      </div>
+    </div>
+  </dialog>
+</product-details-drawer>
+
+{%- comment -%}
+  The drawer injects a product's PDP media gallery (media-gallery / slideshow)
+  into the collection page at runtime. Horizon only ships a component's CSS on
+  pages that actually render it, so the collection page is otherwise missing the
+  slideshow + gallery styles — which leaves the injected slides stacked full
+  width instead of laid out as a carousel. Emit those style-only snippets here so
+  the injected gallery is always styled. (slideshow-controls/-arrows are not
+  custom elements, so rendering them purely for their CSS is inert.)
+{%- endcomment -%}
+{%- render 'slideshow-styles' -%}
+{%- render 'product-media-gallery-content-styles' -%}
+<div hidden aria-hidden="true">
+  {%- render 'slideshow-controls', style: 'none' -%}
+  {%- render 'slideshow-arrows' -%}
+</div>
+
+{% stylesheet %}
+  .product-details-drawer__dialog {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0 0 0 auto;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: var(--shadow-drawer);
+    background-color: var(--color-background);
+  }
+
+  @media screen and (min-width: 750px) {
+    .product-details-drawer__dialog {
+      width: 560px;
+      max-width: 95vw;
+      border-left: var(--style-border-drawer);
+    }
+  }
+
+  .product-details-drawer__dialog:modal {
+    max-height: 100dvh;
+  }
+
+  .product-details-drawer__header {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--padding-sm);
+  }
+
+  .product-details-drawer__close {
+    position: static;
+  }
+
+  .product-details-drawer__content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 var(--padding-lg) var(--padding-xl);
+  }
+
+  /* Force the extracted PDP product-information block into a single stacked column. */
+  .product-details-drawer__content .product-information {
+    display: block;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    gap: 0;
+  }
+
+  .product-details-drawer__content .product-information__grid {
+    display: flex;
+    flex-direction: column;
+    grid-column: auto;
+    gap: var(--gap-md);
+  }
+
+  .product-details-drawer__content .product-information__media,
+  .product-details-drawer__content .product-details {
+    grid-column: auto;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .product-details-drawer__content .product-details {
+    width: auto;
+  }
+
+  /* Title sits in its natural position at the top of `.product-details`,
+     directly under the media gallery. Constrain the size for the narrow drawer. */
+  .product-details-drawer__content .product-details h1 {
+    width: auto;
+    margin: 0 0 var(--margin-md, 1rem);
+    font-size: 1.375rem !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Media spans the full width of the drawer. */
+  .product-details-drawer__content .product-information__media {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  /* Always present the media as a single-column carousel with a thumbnail strip.
+     assets/product-details-drawer.js normalizes the cloned gallery (removes the
+     desktop grid, forces carousel mode, surfaces the thumbnail controls); these
+     rules are a belt-and-suspenders safety net for every breakpoint. */
+  .product-details-drawer__content .media-gallery__grid {
+    display: none !important;
+  }
+
+  .product-details-drawer__content media-gallery slideshow-component {
+    display: block !important;
+  }
+
+  /* Show the thumbnail strip even when the source template hid it on desktop. */
+  .product-details-drawer__content slideshow-controls[thumbnails] {
+    display: flex !important;
+  }
+
+  /* The PDP's per-instance media-fit styles aren't emitted on the collection
+     page, so enforce a sensible fit for injected gallery images/media. */
+  .product-details-drawer__content .product-media :is(img, svg, video, iframe) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-details-drawer__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--padding-2xl) 0;
+  }
+
+  .product-details-drawer__loading[hidden] {
+    display: none;
+  }
+
+  .product-details-drawer__spinner {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 2px solid rgb(var(--color-foreground-rgb, 0 0 0) / 20%);
+    border-block-start-color: rgb(var(--color-foreground-rgb, 0 0 0) / 90%);
+    animation: product-details-drawer-spin 0.7s linear infinite;
+  }
+
+  @keyframes product-details-drawer-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-details-drawer__spinner {
+      animation-duration: 2s;
+    }
+  }
+{% endstylesheet %}

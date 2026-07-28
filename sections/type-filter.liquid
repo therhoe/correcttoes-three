@@ -1,0 +1,354 @@
+{%- liquid
+  assign filter_param = 'filter.p.product_type'
+  assign collection_url = collection.url | default: routes.all_products_collection_url
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<type-filter
+  class="type-filter section color-{{ section.settings.color_scheme }}{% unless section.settings.full_width %} page-width{% endunless %}"
+  data-filter-param="{{ filter_param }}"
+  data-mobile-layout="{{ section.settings.mobile_layout }}"
+  style="
+    --type-filter-padding-block-start: {{ section.settings.padding-block-start }}px;
+    --type-filter-padding-block-end: {{ section.settings.padding-block-end }}px;
+    --type-filter-circle-size: {{ section.settings.circle_size }}px;
+    --type-filter-circle-size-mobile: {{ section.settings.circle_size_mobile }}px;
+    --type-filter-gap: {{ section.settings.gap }}px;
+    --type-filter-gap-mobile: {{ section.settings.gap_mobile }}px;
+    --type-filter-columns-mobile: {{ section.settings.columns_mobile }};
+    --type-filter-align: {{ section.settings.alignment }};
+  "
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="type-filter__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="type-filter__list type-filter__list--mobile-{{ section.settings.mobile_layout }}">
+      {%- for block in section.blocks -%}
+        {%- assign product_type = block.settings.product_type | strip -%}
+        {%- assign item_label = block.settings.label | default: product_type -%}
+        <a
+          class="type-filter__item"
+          href="{{ collection_url }}?{{ filter_param }}={{ product_type | url_encode }}"
+          data-product-type="{{ product_type | escape }}"
+          {{ block.shopify_attributes }}
+        >
+          <span class="type-filter__circle">
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 600
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '120, 240, 360, 480, 600',
+                  sizes: '(min-width: 750px) 200px, 120px',
+                  class: 'type-filter__image',
+                  alt: item_label
+              }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'type-filter__image type-filter__image--placeholder' }}
+            {%- endif -%}
+          </span>
+          {%- if item_label != blank -%}
+            <span class="type-filter__label">{{ item_label }}</span>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</type-filter>
+
+<script src="{{ 'type-filter.js' | asset_url }}" type="module"></script>
+
+{% stylesheet %}
+  .type-filter {
+    padding-block-start: var(--type-filter-padding-block-start, 0);
+    padding-block-end: var(--type-filter-padding-block-end, 0);
+  }
+
+  .type-filter__heading {
+    text-align: var(--type-filter-align, center);
+    margin-block: 0 var(--margin-md, 1rem);
+  }
+
+  /* Desktop is always a single horizontal-scroll row — items never wrap, no
+     matter how many types are added or how large the circle size is. The mobile
+     layout (grid vs scroll) is handled in the max-width media query below. */
+  .type-filter__list {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: safe var(--type-filter-align, center);
+    gap: var(--type-filter-gap, 24px);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-block: 2px;
+  }
+
+  .type-filter__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .type-filter__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-xs, 0.5rem);
+    width: var(--type-filter-circle-size, 120px);
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .type-filter__circle {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--color-background-secondary, rgb(0 0 0 / 5%));
+    outline: 1px solid transparent;
+    outline-offset: 1px;
+    transition: outline-color var(--animation-speed, 0.2s) var(--animation-easing, ease);
+  }
+
+  .type-filter__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .type-filter__image--placeholder {
+    background-color: var(--color-background-secondary, rgb(0 0 0 / 5%));
+  }
+
+  .type-filter__label {
+    font-weight: var(--font-weight-bold, 600);
+    text-align: center;
+  }
+
+  .type-filter__item:hover .type-filter__circle,
+  .type-filter__item:focus-visible .type-filter__circle {
+    outline-color: rgb(var(--color-foreground-rgb, 0 0 0) / 25%);
+  }
+
+  .type-filter__item--active .type-filter__circle {
+    outline-color: rgb(var(--color-foreground-rgb, 0 0 0) / 100%);
+  }
+
+  @media screen and (max-width: 749px) {
+    .type-filter {
+      --type-filter-circle-size: var(--type-filter-circle-size-mobile, 96px);
+      --type-filter-gap: var(--type-filter-gap-mobile, 16px);
+    }
+
+    /* Horizontal scroll: keep one swipeable row */
+    .type-filter__list--mobile-scroll {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-block: 2px;
+    }
+
+    .type-filter__list--mobile-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .type-filter__list--mobile-scroll .type-filter__item {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+
+    /* Grid: fixed number of columns */
+    .type-filter__list--mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--type-filter-columns-mobile, 3), 1fr);
+      justify-items: center;
+    }
+
+    .type-filter__list--mobile-grid .type-filter__item {
+      width: 100%;
+      max-width: var(--type-filter-circle-size, 96px);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Type filter",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Each item filters the collection by its Shopify product type. Add the 'Product type' filter in the Search & Discovery app so it also appears in the sidebar."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Desktop layout"
+    },
+    {
+      "type": "range",
+      "id": "circle_size",
+      "label": "Circle size",
+      "min": 60,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between items",
+      "min": 8,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Layout",
+      "options": [
+        { "value": "scroll", "label": "Horizontal scroll" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "visible_if": "{{ section.settings.mobile_layout == 'grid' }}"
+    },
+    {
+      "type": "range",
+      "id": "circle_size_mobile",
+      "label": "Circle size",
+      "min": 48,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap between items",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "type_filter_item",
+      "name": "Type",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "text",
+          "id": "product_type",
+          "label": "Product type",
+          "info": "Must match the Shopify product type exactly (e.g. Shoes, Boots, Socks)."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Type filter",
+      "blocks": [
+        { "type": "type_filter_item" },
+        { "type": "type_filter_item" },
+        { "type": "type_filter_item" },
+        { "type": "type_filter_item" },
+        { "type": "type_filter_item" },
+        { "type": "type_filter_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

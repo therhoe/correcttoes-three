@@ -1,0 +1,234 @@
+/* =========================================================================
+   Video Library — section, filter row, grid, card, modal player
+   Mirrors the Horizon theme conventions (CSS custom props on the root element).
+   ========================================================================= */
+
+.video-library {
+  padding-block-start: var(--video-library-padding-block-start, 24px);
+  padding-block-end: var(--video-library-padding-block-end, 48px);
+}
+
+.video-library__heading {
+  margin-block: 0 1rem;
+}
+
+/* --- Filter row ---------------------------------------------------------- */
+
+.video-library__filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: var(--video-library-align, flex-start);
+  gap: 0.5rem 0.75rem;
+  margin-block-end: 1.5rem;
+}
+
+.video-library__filter-btn {
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgb(var(--color-foreground-rgb, 0 0 0) / 20%);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font: inherit;
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  line-height: 1.2;
+  transition:
+    background-color var(--animation-speed, 0.2s) var(--animation-easing, ease),
+    color var(--animation-speed, 0.2s) var(--animation-easing, ease),
+    border-color var(--animation-speed, 0.2s) var(--animation-easing, ease);
+}
+
+.video-library__filter-btn:hover,
+.video-library__filter-btn:focus-visible {
+  border-color: rgb(var(--color-foreground-rgb, 0 0 0) / 60%);
+}
+
+.video-library__filter-btn--active {
+  background-color: rgb(var(--color-foreground-rgb, 0 0 0) / 100%);
+  color: rgb(var(--color-background-rgb, 255 255 255) / 100%);
+  border-color: rgb(var(--color-foreground-rgb, 0 0 0) / 100%);
+}
+
+/* --- Grid ---------------------------------------------------------------- */
+
+.video-library__grid {
+  display: grid;
+  grid-template-columns: var(--video-grid-columns, repeat(3, 1fr));
+  gap: var(--video-grid-gap, 24px);
+}
+
+@media screen and (max-width: 989px) {
+  .video-library__grid {
+    grid-template-columns: var(--video-grid-columns-tablet, repeat(2, 1fr));
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .video-library__grid {
+    grid-template-columns: var(--video-grid-columns-mobile, repeat(1, 1fr));
+  }
+}
+
+.video-library__empty,
+.video-library__no-matches {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem 1rem;
+  color: rgb(var(--color-foreground-rgb, 0 0 0) / 60%);
+}
+
+.video-library__no-matches {
+  /* Lives outside the grid; nudge it under the grid. */
+  margin-block: 1rem 0;
+}
+
+/* --- Card ---------------------------------------------------------------- */
+
+.video-library__card {
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  padding: 0;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.video-library__card-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  background-color: rgb(var(--color-foreground-rgb, 0 0 0) / 5%);
+  border-radius: var(--media-corner-radius, 8px);
+}
+
+.video-library__card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--animation-speed, 0.3s) var(--animation-easing, ease);
+}
+
+.video-library__card:hover .video-library__card-image,
+.video-library__card:focus-visible .video-library__card-image {
+  transform: scale(1.04);
+}
+
+.video-library__card-image--placeholder {
+  opacity: 0.4;
+}
+
+.video-library__card-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0 0 0 / 55%);
+  color: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background-color var(--animation-speed, 0.2s) var(--animation-easing, ease);
+}
+
+.video-library__card-play svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  margin-inline-start: 3px; /* optical centering for the play triangle */
+}
+
+.video-library__card:hover .video-library__card-play,
+.video-library__card:focus-visible .video-library__card-play {
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.video-library__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.video-library__card-title {
+  font-weight: var(--font-weight-bold, 600);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.video-library__card-description {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgb(var(--color-foreground-rgb, 0 0 0) / 70%);
+}
+
+.video-library__card[hidden] {
+  display: none;
+}
+
+/* --- Modal --------------------------------------------------------------- */
+
+.video-library__dialog {
+  border: 0;
+  background: #000;
+  color: #fff;
+  padding: 0;
+  width: min(92vw, 1100px);
+  max-width: 1100px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-library__dialog::backdrop {
+  background-color: rgb(0 0 0 / 80%);
+}
+
+.video-library__dialog-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  appearance: none;
+  background: rgb(0 0 0 / 50%);
+  color: #fff;
+  border: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--animation-speed, 0.2s) var(--animation-easing, ease);
+}
+
+.video-library__dialog-close:hover,
+.video-library__dialog-close:focus-visible {
+  background: rgb(0 0 0 / 85%);
+}
+
+.video-library__player {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  background: #000;
+}
+
+.video-library__player iframe,
+.video-library__player video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}

@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-blog-sidebar",
+      "settings": {
+        "posts_in_sidebar": 50,
+        "show_date_in_sidebar": true,
+        "sidebar_position": "left",
+        "sticky_sidebar": true,
+        "group_by_tags": true,
+        "sidebar_title": "",
+        "sidebar_gap": 80,
+        "sidebar_top_offset": 40,
+        "sidebar_font_size": 14,
+        "sidebar_text_color": "#00000000",
+        "sidebar_background_color": "#00000000",
+        "show_date_in_body": true,
+        "show_author_in_body": false,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

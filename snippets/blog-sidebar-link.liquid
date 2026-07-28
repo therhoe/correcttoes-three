@@ -1,0 +1,38 @@
+{% comment %}
+  Renders one sidebar post link (<li><a>...).
+  Used by both the tag-grouped and the flat fallback paths inside
+  sections/main-blog-sidebar.liquid so the two render identically.
+
+  @param {object} post - The article to render.
+  @param {object} [current_article] - The article being displayed in the main pane (for active-state).
+  @param {boolean} [show_date=true]
+{% endcomment %}
+
+{%- liquid
+  if show_date == nil
+    assign show_date = true
+  endif
+  assign is_active = false
+  if current_article and post.id == current_article.id
+    assign is_active = true
+  endif
+-%}
+
+<li class="blog-sidebar__item">
+  <a
+    href="{{ post.url }}"
+    class="blog-sidebar__link{% if is_active %} blog-sidebar__link--active{% endif %}"
+    data-article-handle="{{ post.handle }}"
+    {% if is_active %}aria-current="page"{% endif %}
+  >
+    <span class="blog-sidebar__link-title">{{ post.title }}</span>
+    {%- if show_date -%}
+      <time
+        class="blog-sidebar__link-date"
+        datetime="{{ post.published_at | date: '%Y-%m-%d' }}"
+      >
+        {{- post.published_at | date: '%b %-d, %Y' -}}
+      </time>
+    {%- endif -%}
+  </a>
+</li>
