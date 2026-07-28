@@ -379,7 +379,7 @@
                   "type": "review",
                   "name": "t:names.product_review_stars",
                   "settings": {
-                    "stars_style": "shaded",
+                    "stars_style": "single",
                     "show_number": true,
                     "rating_color": "foreground",
                     "type_preset": "h5",
