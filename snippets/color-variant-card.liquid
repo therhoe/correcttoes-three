@@ -1,0 +1,436 @@
+{%- doc -%}
+  Renders ONE product card representing ONE color of a product, linking to that
+  color's variant URL.
+
+  WHY THIS EXISTS INSTEAD OF REUSING THE BLOCK-BASED CARD
+  -------------------------------------------------------
+  The grid renders cards with
+    {% content_for 'block', type: '_product-card', closest.product: product %}
+  and that API accepts a PRODUCT only — there is no `closest.variant`. Every child
+  block (price, gallery, title, swatches) resolves off `closest.product`, and
+  "which variant am I" normally comes from `product.selected_variant`, which only
+  Shopify ever sets (from a ?variant= URL or a filter context). Liquid cannot
+  assign it. So rendering the block N times yields N identical cards, and there is
+  no way to hand one a color. Hence this snippet.
+
+  TYPOGRAPHY IS DUPLICATED HERE — KEEP IN SYNC
+  --------------------------------------------
+  Edition 3 card typography lives in block settings inside template JSON, applied
+  as inline styles by the block liquid. A snippet cannot read those: main-collection
+  declares no `blocks` in its schema and collection.json's `main` has no
+  `block_order`, only `static: true` blocks, which are not enumerable via
+  `section.blocks`. The values below are therefore copied from the product-card
+  block in templates/collection.json. If Edition 3 is retuned in the theme editor,
+  update them here too. See docs/design-system.md.
+
+    vendor eyebrow : 0.75rem   subheading family, letter-spacing loose, pad-top 6
+    title          : 0.9375rem subheading family, letter-spacing normal, pad-top 2
+    color name     : 0.75rem   subheading family (this snippet only)
+    price          : type preset h6, pad-top 4
+    price+rating   : row, space-between, align center, gap 8
+
+  @param {object} product - The product.
+  @param {object} section - The section, for its variant_cards_* settings.
+  @param {string} option_position - Position of the split option (e.g. '1').
+  @param {string} option_value_name - The option value this card represents (e.g. 'Aqua').
+  @param {object} [paginate] - Paginate object, for data-page on the wrapper.
+  @param {number} [wrapper_index0] - Index of the parent product in the grid loop,
+    used for the product-grid__item--N class.
+  @param {string} [wrapper_tag] - 'li' (default) or 'div'.
+
+  @example
+  {% render 'color-variant-card',
+     product: product, section: section,
+     option_position: '1', option_value_name: 'Aqua',
+     paginate: paginate, wrapper_index0: forloop.index0 %}
+{%- enddoc -%}
+
+{%- liquid
+  assign wrapper_tag = wrapper_tag | default: 'li'
+
+  assign option_position_int = option_position | plus: 0
+  assign option_index = option_position_int | minus: 1
+  assign option_key = 'option' | append: option_position_int
+
+  assign split_option = product.options_with_values[option_index]
+  assign option_value = nil
+  for value in split_option.values
+    if value.name == option_value_name
+      assign option_value = value
+      break
+    endif
+  endfor
+
+  # -- Media. Mirrors snippets/variant-swatches.liquid, plus a relaxed third pass:
+  #    the upstream fallback requires variant.available, so a fully sold-out color
+  #    would otherwise fall through to the generic product image.
+  assign featured_media = option_value.variant.featured_media
+  if featured_media == blank
+    for variant in product.variants
+      if variant[option_key] == option_value_name and variant.available and variant.featured_media
+        assign featured_media = variant.featured_media
+        break
+      endif
+    endfor
+  endif
+  if featured_media == blank
+    for variant in product.variants
+      if variant[option_key] == option_value_name and variant.featured_media
+        assign featured_media = variant.featured_media
+        break
+      endif
+    endfor
+  endif
+  if featured_media == blank
+    assign featured_media = product.featured_media
+  endif
+
+  # -- Price and availability across THIS color's variants only. snippets/price.liquid
+  #    is product-wide by design (see its own comment), so it cannot be reused.
+  #    NOTE: never compare against nil — Liquid raises on `Integer < nil`. The
+  #    has_price flag and the `!= blank` guard below are load-bearing.
+  assign has_price = false
+  assign color_price_min = 0
+  assign color_price_max = 0
+  assign color_compare_max = 0
+  assign color_available = false
+  assign color_variant_count = 0
+  assign first_variant = nil
+  assign first_available_variant = nil
+
+  for variant in product.variants
+    unless variant[option_key] == option_value_name
+      continue
+    endunless
+
+    assign color_variant_count = color_variant_count | plus: 1
+    if first_variant == nil
+      assign first_variant = variant
+    endif
+
+    if has_price == false
+      assign color_price_min = variant.price
+      assign color_price_max = variant.price
+      assign has_price = true
+    else
+      if variant.price < color_price_min
+        assign color_price_min = variant.price
+      endif
+      if variant.price > color_price_max
+        assign color_price_max = variant.price
+      endif
+    endif
+
+    if variant.compare_at_price != blank and variant.compare_at_price > color_compare_max
+      assign color_compare_max = variant.compare_at_price
+    endif
+
+    if variant.available
+      assign color_available = true
+      if first_available_variant == nil
+        assign first_available_variant = variant
+      endif
+    endif
+  endfor
+
+  assign link_variant = first_available_variant | default: first_variant
+  assign card_url = link_variant.url
+
+  assign on_sale = false
+  if color_compare_max > color_price_min
+    assign on_sale = true
+  endif
+
+  assign show_price_range = false
+  if color_price_max > color_price_min
+    assign show_price_range = true
+  endif
+
+  assign has_badges = false
+  if color_available == false or on_sale
+    assign has_badges = true
+  endif
+
+  # -- Quick add. A color with one variant has nothing left to choose, so force 'Add'.
+  assign has_quick_add = false
+  if section.settings.variant_cards_show_quick_add and settings.quick_add and color_available
+    assign has_quick_add = true
+  endif
+  assign has_mobile_quick_add = false
+  if has_quick_add and settings.mobile_quick_add
+    assign has_mobile_quick_add = true
+  endif
+  assign force_add = false
+  if color_variant_count == 1
+    assign force_add = true
+  endif
+
+  # -- Ids must be variant-unique: assets/product-card.js writes the anchor id into
+  #    url.hash and sections/main-collection.liquid reads it back to restore scroll
+  #    position after infinite scroll. Shared ids would land Back on the wrong color.
+  assign card_uid = section.id | append: '-' | append: link_variant.id
+  assign card_link_id = 'color-variant-card-link-' | append: card_uid
+
+  assign ratio = '1'
+  case section.settings.variant_cards_image_ratio
+    when 'landscape'
+      assign ratio = '16 / 9'
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'square'
+      assign ratio = '1'
+    when 'adapt'
+      assign ratio = featured_media.preview_image.aspect_ratio | default: '1'
+  endcase
+
+  # -- sizes attribute: same math as snippets/card-gallery.liquid
+  assign image_sizes = '(min-width: 750px) 50vw, 100vw'
+  if section.settings.product_card_size
+    capture card_size
+      render 'util-product-grid-card-size', section: section
+    endcapture
+    assign card_size = card_size | strip | replace: 'px', '' | plus: 0
+    capture sizes_attribute
+      render 'util-autofill-img-size-attr', card_size: card_size, card_gap: section.settings.columns_gap_horizontal
+    endcapture
+    assign image_sizes = sizes_attribute | strip
+  elsif section.settings.columns and section.settings.layout_type != 'editorial'
+    assign viewport_width = 100.0 | divided_by: section.settings.columns
+    assign sizes_attribute = '(min-width: 750px) [viewport_width]vw, 100vw' | replace: '[viewport_width]', viewport_width
+    assign image_sizes = sizes_attribute | strip
+  endif
+
+  if settings.transition_to_main_product and featured_media != blank
+    assign featured_media_url = featured_media.preview_image | image_url: width: 500
+  endif
+
+  assign accessible_title = product.title | append: ' - ' | append: option_value_name
+-%}
+
+<{{ wrapper_tag }}
+  id="{{ section.id }}-{{ product.id }}-{{ link_variant.id }}"
+  class="product-grid__item product-grid__item--{{ wrapper_index0 | default: 0 }}"
+  {% if paginate %}
+    data-page="{{ paginate.current_page }}"
+  {% endif %}
+  data-product-id="{{ product.id }}"
+  ref="cards[]"
+>
+  <product-card
+    class="product-card size-style"
+    style="--size-style-width: 100%; --size-style-height: fit;"
+    data-product-id="{{ product.id }}"
+    id="color-variant-card-{{ card_uid }}"
+    {% if settings.transition_to_main_product %}
+      data-product-transition="true"
+      data-featured-media-url="{{ featured_media_url }}"
+      on:click="/handleViewTransition"
+    {% endif %}
+  >
+    <a
+      id="{{ card_link_id | md5 }}"
+      href="{{ card_url }}"
+      class="product-card__link"
+      ref="productCardLink"
+    >
+      <span class="visually-hidden">{{ accessible_title }}</span>
+    </a>
+    <div
+      class="product-card__content layout-panel-flex layout-panel-flex--column product-grid__card spacing-style border-style gap-style"
+      style="
+        --border-width: 1px; --border-style: none;
+        --border-color: rgb(var(--color-border-rgb) / 1.0);
+        --border-radius: {{ section.settings.variant_cards_corner_radius }}px;
+        {% if section.settings.variant_cards_corner_radius > 0 %}overflow: hidden;{% endif %}
+        --flex-direction: column; --flex-wrap: nowrap; --flex-wrap-mobile: wrap;
+        --padding-block-start: {{ section.settings.variant_cards_padding_block }}px;
+        --padding-block-end: {{ section.settings.variant_cards_padding_block }}px;
+        --padding-inline-start: {{ section.settings.variant_cards_padding_inline }}px;
+        --padding-inline-end: {{ section.settings.variant_cards_padding_inline }}px;
+        {% render 'gap-style', value: section.settings.variant_cards_gap, name: 'product-card-gap' %}
+        --quick-add-display: {% if has_quick_add %}flex{% else %}none{% endif %};
+        --quick-add-mobile-display: {% if has_mobile_quick_add %}flex{% else %}none{% endif %};
+        --quick-add-mobile-opacity: {% if has_mobile_quick_add %}1{% else %}0{% endif %};
+      "
+    >
+      {%- comment -%} Gallery: one slide, this color's image. {%- endcomment -%}
+      <div
+        ref="cardGallery"
+        class="card-gallery card-gallery-{{ card_uid }} spacing-style border-style{% if has_badges %} card-gallery--badge-{{ settings.badge_position }}{% endif %}"
+        style="--gallery-aspect-ratio: {{ ratio }};"
+        data-product-id="{{ product.id }}"
+        {% if settings.transition_to_main_product %}
+          data-view-transition-to-main-product
+        {% endif %}
+        data-image-ratio="{{ section.settings.variant_cards_image_ratio }}"
+      >
+        {%- if featured_media != blank -%}
+          {%- liquid
+            capture slide_children
+              render 'product-media', media: featured_media, sizes: image_sizes, loading: 'eager', preview_image_only: true
+            endcapture
+            capture slides
+              render 'slideshow-slide', slide_id: featured_media.id, index: 0, class: 'product-media-container media-fit', children: slide_children
+            endcapture
+          -%}
+          <a
+            class="contents"
+            ref="cardGalleryLink"
+            href="{{ card_url }}"
+            aria-label="{{ accessible_title }}"
+          >
+            {% render 'slideshow',
+              ref: 'slideshow',
+              initial_slide: 0,
+              slides: slides,
+              slide_count: 1,
+              attributes: 'disabled="true"'
+            %}
+          </a>
+        {%- endif -%}
+
+        {%- comment -%} Per-color badge. More correct than the block version, which
+        uses product.compare_at_price (just the first variant's). {%- endcomment -%}
+        <div
+          class="product-badges product-badges--{{ settings.badge_position }}"
+          style="
+            --badge-border-radius: {{ settings.badge_corner_radius }}px;
+            --badge-font-family: var(--font-{{ settings.badge_font_family }}--family); --badge-font-weight: var(--font-{{ settings.badge_font_family }}--weight); --badge-text-transform: {{ settings.badge_text_transform }};
+          "
+        >
+          {%- if has_badges -%}
+            <div
+              class="product-badges__badge product-badges__badge--rectangle{% if color_available == false %} color-{{ settings.badge_sold_out_color_scheme }}{% else %} color-{{ settings.badge_sale_color_scheme }}{% endif %}"
+            >
+              {%- if color_available == false -%}
+                {{ 'content.product_badge_sold_out' | t }}
+              {%- else -%}
+                {%- assign save_percent = color_compare_max | minus: color_price_min | times: 100.0 | divided_by: color_compare_max | round -%}
+                {%- if save_percent >= 5 -%}
+                  Save {{ save_percent }}%
+                {%- else -%}
+                  {{ 'content.product_badge_sale' | t }}
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if has_quick_add -%}
+          {% render 'quick-add',
+            product: product,
+            section_id: section.id,
+            variant: link_variant,
+            form_id_suffix: link_variant.id,
+            force_add: force_add
+          %}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Vendor eyebrow {%- endcomment -%}
+      {%- if product.vendor != blank -%}
+        <div
+          class="spacing-style text-block custom custom-typography custom-font-size custom-color text-block--align-left"
+          style="
+            --padding-block-start: 6px; --color: var(--color-foreground);
+            --font-size: 0.75rem; --font-weight: var(--font-subheading--weight);
+            --font-family: var(--font-subheading--family); --text-transform: none;
+            --line-height: var(--line-height--body-normal);
+            --letter-spacing: var(--letter-spacing--body-loose);
+            --width: 100%; --text-align: left;
+          "
+        >
+          <p>{{ product.vendor }}</p>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Title {%- endcomment -%}
+      <div
+        class="spacing-style text-block custom custom-typography custom-font-size custom-color text-block--align-left"
+        style="
+          --padding-block-start: 2px; --color: var(--color-foreground);
+          --font-size: 0.9375rem; --font-weight: var(--font-subheading--weight);
+          --font-family: var(--font-subheading--family); --text-transform: none;
+          --line-height: var(--line-height--body-normal);
+          --letter-spacing: var(--letter-spacing--body-normal);
+          --width: 100%; --text-align: left;
+        "
+      >
+        <a class="contents user-select-text" ref="productTitleLink" href="{{ card_url }}">
+          <p role="heading" aria-level="3">
+            {{- product.title -}}
+            {%- if section.settings.variant_cards_title_mode == 'append' %} &ndash; {{ option_value_name }}{% endif -%}
+          </p>
+        </a>
+      </div>
+
+      {%- comment -%} Color name on its own line (default). Needed because otherwise
+      sibling cards differ only by image, and SPORT's values carry the size. {%- endcomment -%}
+      {%- if section.settings.variant_cards_title_mode != 'append' -%}
+        <div
+          class="spacing-style text-block custom custom-typography custom-font-size custom-color text-block--align-left"
+          style="
+            --padding-block-start: 0px; --color: var(--color-foreground);
+            --font-size: 0.75rem; --font-weight: var(--font-subheading--weight);
+            --font-family: var(--font-subheading--family); --text-transform: none;
+            --line-height: var(--line-height--body-normal);
+            --letter-spacing: var(--letter-spacing--body-loose);
+            --width: 100%; --text-align: left;
+          "
+        >
+          <p>{{ option_value_name }}</p>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Price + rating row {%- endcomment -%}
+      <div
+        class="group-block group-block--height-fit group-block--width-fill border-style spacing-style size-style"
+        style="--border-width: 1px; --border-style: none; --border-radius: 0px; --size-style-width: 100%; --size-style-height: fit;"
+      >
+        <div
+          class="group-block-content layout-panel-flex layout-panel-flex--row"
+          style="--flex-direction: row; --flex-wrap: nowrap; --flex-wrap-mobile: wrap; --gap: 8px; --horizontal-alignment: space-between; --vertical-alignment: center; --vertical-alignment-mobile: center;"
+        >
+          <div class="text-block text-left h6 spacing-style" style="--padding-block-start: 4px; --width: fit-content;">
+            <div ref="priceContainer">
+              {%- if on_sale -%}
+                <div class="price__sale">
+                  <span class="price-item__group">
+                    <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
+                    <span class="price-item--sale price">{% render 'format-price', price: color_price_min %}</span>
+                  </span>
+                  <span class="price-item__group">
+                    <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
+                    <span class="price-item--regular compare-at-price">{% render 'format-price', price: color_compare_max %}</span>
+                  </span>
+                </div>
+              {%- else -%}
+                <div class="price__regular">
+                  <span class="price">
+                    {%- render 'format-price', price: color_price_min -%}
+                    {%- if show_price_range %} &ndash; {% render 'format-price', price: color_price_max %}{% endif -%}
+                  </span>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {% render 'product-rating',
+            product: product,
+            stars_style: 'shaded',
+            show_number: true,
+            show_divider: true,
+            show_review_label: false,
+            rating_color: 'foreground',
+            type_preset: 'h5',
+            alignment: 'left',
+            size_style: '--size-style-width: fit-content;'
+          %}
+        </div>
+      </div>
+    </div>
+  </product-card>
+</{{ wrapper_tag }}>
+
+{% render 'product-badges-styles' %}
+{% render 'quick-add-styles' %}

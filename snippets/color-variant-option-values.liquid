@@ -1,0 +1,120 @@
+{%- doc -%}
+  Decides whether a product should be split into one card per color, and if so
+  echoes the plan for the caller to loop over.
+
+  Echoes either:
+    - an empty string  -> caller must render ONE normal product card, or
+    - "<position>||<value name>~~<position>||<value name>~~..."
+
+  Split on the option NAME (default "Color") rather than on swatch data. Verified
+  against the live store: both products that need splitting have an option
+  literally named "Color" at position 1, so this works whether or not swatches
+  are configured in the Shopify admin. Name-matching also avoids a real
+  false positive: the "Closeout Sale | The Original" product has an option named
+  "Available" whose values look like colors ("Extra Small - Aqua - v1"), and a
+  swatch-based heuristic would wrongly expand it into 4 near-identical cards.
+
+  The product-type fence is required, not belt-and-braces: shoe products
+  (Lems / Vivobarefoot / Luna) also carry a "Color" option, so without it the
+  whole catalog would split.
+
+  @param {object} product - The product to consider.
+  @param {string} [option_name] - Option name to split on. Defaults to 'Color'.
+  @param {string} [allowed_product_types] - Comma-separated product_type allowlist,
+    matched case-insensitively. Leave blank to allow every product type.
+  @param {boolean} [filters_active] - True when a storefront filter is applied. Forces
+    a single card, because product.options_with_values is NOT narrowed by filters, so
+    splitting would show Clear and Plum on a "Color: Aqua" filtered page. Shopify
+    already sets selected_variant under a filter, so the normal card is correct there.
+
+  @example
+  {% capture color_plan %}
+    {% render 'color-variant-option-values',
+       product: product,
+       option_name: section.settings.variant_cards_option,
+       allowed_product_types: section.settings.variant_cards_product_types,
+       filters_active: filters_active %}
+  {% endcapture %}
+{%- enddoc -%}
+
+{%- liquid
+  assign option_name = option_name | default: 'Color'
+  assign wanted_name = option_name | downcase | strip
+
+  assign should_split = true
+
+  if product == blank or product.id == empty
+    assign should_split = false
+  endif
+
+  if filters_active
+    assign should_split = false
+  endif
+
+  # -- product_type fence. Blank allowlist means "no restriction".
+  if should_split
+    assign allowlist = allowed_product_types | default: '' | strip
+    if allowlist != ''
+      assign product_type_matches = false
+      assign this_type = product.type | downcase | strip
+      assign allowed_types = allowlist | downcase | split: ','
+      for allowed_type in allowed_types
+        assign allowed_type_clean = allowed_type | strip
+        if allowed_type_clean == this_type
+          assign product_type_matches = true
+          break
+        endif
+      endfor
+      unless product_type_matches
+        assign should_split = false
+      endunless
+    endif
+  endif
+
+  # -- Locate the option: by name first, then fall back to the theme's own
+  #    convention of "first option whose values carry swatches", matching
+  #    snippets/variant-swatches.liquid.
+  assign split_option = nil
+  if should_split
+    for product_option in product.options_with_values
+      assign this_option_name = product_option.name | downcase | strip
+      if this_option_name == wanted_name
+        assign split_option = product_option
+        break
+      endif
+    endfor
+
+    if split_option == nil
+      for product_option in product.options_with_values
+        assign swatch_count = product_option.values | map: 'swatch' | compact | size
+        if swatch_count > 0
+          assign split_option = product_option
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  # -- Hard gate: nothing to split unless we found an option with 2+ values.
+  if split_option == nil
+    assign should_split = false
+  elsif split_option.values.size < 2
+    assign should_split = false
+  endif
+
+  if should_split
+    assign plan_entries = ''
+    for option_value in split_option.values
+      # Strip the delimiters out of the value name so an option value containing
+      # '||' or '~~' cannot corrupt the plan string.
+      assign safe_name = option_value.name | replace: '||', '' | replace: '~~', ''
+      assign entry = split_option.position | append: '||' | append: safe_name
+      if forloop.first
+        assign plan_entries = entry
+      else
+        assign plan_entries = plan_entries | append: '~~' | append: entry
+      endif
+    endfor
+    echo plan_entries
+  endif
+-%}
