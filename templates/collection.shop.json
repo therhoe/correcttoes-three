@@ -472,8 +472,8 @@
                   "type": "review",
                   "name": "t:names.product_review_stars",
                   "settings": {
-                    "stars_style": "single",
-                    "show_number": true,
+                    "stars_style": "shaded",
+                    "show_number": false,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
