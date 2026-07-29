@@ -375,7 +375,7 @@
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
-                    "alignment": "right"
+                    "alignment": "left"
                   },
                   "blocks": {}
                 }
