@@ -586,6 +586,18 @@
   */
   .hero--inset {
     margin-block-start: var(--page-margin);
+    position: relative;
+  }
+
+  .hero--inset::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--page-margin));
+    left: 0;
+    right: 0;
+    height: var(--page-margin);
+    background: inherit;
+    pointer-events: none;
   }
 
   /* Keep full-screen height accurate for a first-section hero by counting the added top margin */
