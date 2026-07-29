@@ -31,6 +31,13 @@
     assign decimal_rounded = decimal_rating | ceil
 
     assign svg_filled_stars = rating | floor | plus: decimal_rounded
+
+    assign render_divider = false
+    if block_settings.show_number and block_settings.stars_style == 'single'
+      assign render_divider = true
+    elsif block_settings.show_number and block_settings.show_divider
+      assign render_divider = true
+    endif
   %}
 
   <div
@@ -92,12 +99,14 @@
         {%- if block_settings.stars_style == 'single' -%}
           <span aria-hidden="true">{{- rating | round: 1 }}</span>
         {%- endif -%}
-        {%- if block_settings.stars_style == 'single' and block_settings.show_number -%}
+        {%- if render_divider -%}
           <span class="rating-count-separator">|</span>
         {%- endif -%}
         {%- if block_settings.show_number -%}
           {{- rating_count }}
-          {{ 'content.reviews' | t }}
+          {%- if block_settings.show_review_label -%}
+            {{ 'content.reviews' | t }}
+          {%- endif -%}
         {%- endif -%}
       </p>
     {%- endif -%}
@@ -197,6 +206,22 @@
       "id": "show_number",
       "label": "t:settings.review_count",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review_label",
+      "label": "Show \"reviews\" label",
+      "info": "Turn off to show just the count (e.g. \"| 365\") instead of \"365 reviews\".",
+      "default": true,
+      "visible_if": "{{ block.settings.show_number }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider before count",
+      "info": "Adds a \"|\" before the review count. Always shown for the single-star style.",
+      "default": false,
+      "visible_if": "{{ block.settings.show_number and block.settings.stars_style != 'single' }}"
     },
     {
       "type": "select",

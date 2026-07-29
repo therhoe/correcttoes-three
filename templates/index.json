@@ -370,6 +370,8 @@
                   "settings": {
                     "stars_style": "shaded",
                     "show_number": true,
+                    "show_divider": true,
+                    "show_review_label": false,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
@@ -817,6 +819,8 @@
                   "settings": {
                     "stars_style": "shaded",
                     "show_number": true,
+                    "show_divider": true,
+                    "show_review_label": false,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
@@ -1125,6 +1129,8 @@
                   "settings": {
                     "stars_style": "shaded",
                     "show_number": true,
+                    "show_divider": true,
+                    "show_review_label": false,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
@@ -1652,6 +1658,8 @@
                   "settings": {
                     "stars_style": "shaded",
                     "show_number": true,
+                    "show_divider": true,
+                    "show_review_label": false,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
