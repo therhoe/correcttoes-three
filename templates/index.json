@@ -369,7 +369,7 @@
                   "name": "t:names.product_review_stars",
                   "settings": {
                     "stars_style": "shaded",
-                    "show_number": false,
+                    "show_number": true,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
@@ -816,7 +816,7 @@
                   "name": "t:names.product_review_stars",
                   "settings": {
                     "stars_style": "shaded",
-                    "show_number": false,
+                    "show_number": true,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
@@ -1124,7 +1124,7 @@
                   "name": "t:names.product_review_stars",
                   "settings": {
                     "stars_style": "shaded",
-                    "show_number": false,
+                    "show_number": true,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",
@@ -1651,7 +1651,7 @@
                   "name": "t:names.product_review_stars",
                   "settings": {
                     "stars_style": "shaded",
-                    "show_number": false,
+                    "show_number": true,
                     "rating_color": "foreground",
                     "type_preset": "h5",
                     "width": "fit-content",

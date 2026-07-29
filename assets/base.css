@@ -4213,8 +4213,3 @@ product-recommendations:has([data-has-recommendations='false']) {
     translate: 0px var(--atc-destination, 0px);
   }
 }
-
-/* Hide "reviews" text while keeping the count number */
-.jdgm-review-count {
-  word-spacing: 9999px;
-}
