@@ -5,16 +5,26 @@
   @param {string} section_id - The section ID
   @param {object} [block] - The block object
   @param {string} [color_scheme] - The color scheme to use
+  @param {object} [variant] - Variant to preselect. Defaults to
+    product.selected_or_first_available_variant. Used by per-color cards
+    (snippets/color-variant-card.liquid), which know their variant up front
+    because `product.selected_variant` is only ever set by Shopify.
+  @param {string} [form_id_suffix] - Uniquifies the form id. Defaults to block.id,
+    which is nil when this snippet is rendered from a section rather than a block,
+    so section callers must pass something unique (e.g. a variant id).
+  @param {boolean} [force_add] - Force the "Add" button instead of "Choose options".
+    For a card that already pins every option, so there is nothing left to choose.
 {%- enddoc -%}
 
 {% liquid
-  assign product_form_id = 'QuickAdd-ProductForm-' | append: product.id | append: '-' | append: block.id
+  assign form_id_suffix = form_id_suffix | default: block.id
+  assign product_form_id = 'QuickAdd-ProductForm-' | append: product.id | append: '-' | append: form_id_suffix
   assign add_to_cart_text = 'actions.add' | t
   assign choose_options_text = 'actions.choose' | t
   assign color_scheme = color_scheme | default: settings.quick_add_color_scheme
 
   # Logic to determine which variant to use (matching swatch selection logic from product-card)
-  assign variant = product.selected_or_first_available_variant
+  assign variant = variant | default: product.selected_or_first_available_variant
 
   if variant.available
     assign can_add_to_cart = true
@@ -24,6 +34,9 @@
 
   assign quick_add_button = 'choose'
   if product.variants_count == 1 or product.options.size == 1 and product.selected_variant
+    assign quick_add_button = 'add'
+  endif
+  if force_add
     assign quick_add_button = 'add'
   endif
 %}
