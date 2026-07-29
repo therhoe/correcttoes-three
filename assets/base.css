@@ -4214,18 +4214,7 @@ product-recommendations:has([data-has-recommendations='false']) {
   }
 }
 
-/* Hide "reviews" text from product rating widgets */
-.jdgm-review-count::after,
-.jdgm-text {
-  display: none;
-}
-
-/* Alternative selectors for different Judge.me versions */
-[class*="review-count"] {
-  font-size: 0;
-}
-
-[class*="review-count"]::after {
-  font-size: 1rem;
-  content: '';
+/* Hide "reviews" text while keeping the count number */
+.jdgm-review-count {
+  word-spacing: 9999px;
 }
