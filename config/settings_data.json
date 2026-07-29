@@ -301,7 +301,7 @@
       },
       "scheme-4": {
         "settings": {
-          "background": "#d45511",
+          "background": "#F5F5F5",
           "foreground_heading": "#ffffff",
           "foreground": "#ffffff",
           "primary": "#d45511",
@@ -419,8 +419,8 @@
       "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7": {
         "settings": {
           "background": "rgba(0,0,0,0)",
-          "foreground_heading": "#3e3e3e",
-          "foreground": "#3e3e3e",
+          "foreground_heading": "#FFFFFF",
+          "foreground": "#FFFFFF",
           "primary": "#3e3e3e",
           "primary_hover": "#00000087",
           "border": "#eeeeee",

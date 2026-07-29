@@ -210,7 +210,7 @@
         "inset_corner_radius": 12,
         "section_height": "medium",
         "section_height_custom": 50,
-        "color_scheme": "scheme-6",
+        "color_scheme": "scheme-4",
         "toggle_overlay": true,
         "overlay_color": "#00000073",
         "overlay_style": "gradient",
