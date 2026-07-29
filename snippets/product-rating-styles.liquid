@@ -1,0 +1,67 @@
+{%- doc -%}
+  Product rating styles consolidated into a single snippet.
+
+  Extracted verbatim from the `{% stylesheet %}` that used to live in
+  blocks/review.liquid, so that callers outside the block system
+  (snippets/product-rating.liquid, rendered by snippets/color-variant-card.liquid)
+  still get the CSS. Follows the same pattern as quick-add-styles /
+  product-badges-styles.
+
+  @example
+  {% render 'product-rating-styles' %}
+{%- enddoc -%}
+
+{% stylesheet %}
+  .rating-wrapper {
+    gap: var(--gap-xs);
+    min-width: fit-content;
+  }
+
+  .rating-color--primary {
+    --star-fill-color: var(--color-primary);
+    --star-fill-color-rgb: var(--color-primary-rgb);
+    --color: var(--color-primary);
+  }
+
+  .rating-color--foreground {
+    --star-fill-color: var(--color-foreground);
+    --star-fill-color-rgb: var(--color-foreground-rgb);
+    --color: var(--color-foreground);
+  }
+
+  .rating-wrapper,
+  .rating {
+    display: flex;
+    align-items: center;
+  }
+
+  .rating-wrapper.justify-right {
+    flex-direction: row-reverse;
+  }
+
+  .rating {
+    gap: var(--gap-3xs);
+  }
+
+  .rating-wrapper .rating-count,
+  .rating-wrapper .rating-count-separator {
+    color: var(--star-fill-color);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .rating-count-separator {
+    opacity: var(--opacity-20);
+    padding-left: calc(var(--padding-xs) / 2);
+    padding-right: var(--padding-xs);
+  }
+
+  .stars {
+    height: var(--star-size);
+    fill: var(--empty-star-fill-color);
+  }
+
+  .filled-star {
+    fill: #D45511;
+  }
+{% endstylesheet %}
