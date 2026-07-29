@@ -596,6 +596,7 @@
   .hero--inset .hero__media-grid {
     /* Matches the page grid's center column: page margin on small screens, centered page-width column on large */
     inset-inline: max(var(--page-margin), calc((100% - var(--page-width)) / 2 + var(--page-margin)));
+    inset-block: 0;
     border-radius: var(--hero-inset-radius, 0);
     overflow: hidden;
   }
@@ -642,6 +643,7 @@
   .hero__media-wrapper {
     overflow: hidden;
     position: relative;
+    height: 100%;
   }
 
   .hero__media {
