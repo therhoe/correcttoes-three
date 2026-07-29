@@ -1,7 +1,7 @@
 # Correct Toes — Theme Design System
 
 Reference for anyone editing this theme (in code or the Shopify theme editor).
-Theme base: Shopify **Horizon**. Audited 2026-07-28.
+Theme base: Shopify **Horizon**. Audited 2026-07-28; fonts switched to Archivo + DM Sans the same day.
 
 > **TL;DR rules:** Use the type presets, not "Custom". Use color schemes, not hex pickers.
 > When you need the brand orange or teal, copy the exact hex from this doc.
@@ -14,10 +14,12 @@ Two typefaces, four roles. All fonts are served by the Shopify Fonts API (no fon
 
 | Role | Typeface | Weight | CSS variables | Used for |
 |---|---|---|---|---|
-| Body | **Open Sans** | 400 | `--font-body--family/style/weight` | Paragraphs, RTE text, most UI |
-| Heading | **Figtree** | 700 | `--font-heading--*` | H1–H4, H6 |
-| Subheading | **Figtree** | 400 | `--font-subheading--*` | H5 / eyebrow labels |
-| Accent | **Figtree** | 400 | `--font-accent--*` | Available, rarely used |
+| Body | **DM Sans** | 400 | `--font-body--family/style/weight` | Paragraphs, RTE text, most UI |
+| Heading | **Archivo** | 700 | `--font-heading--*` | H1–H4, H6 |
+| Subheading | **DM Sans** | 500 | `--font-subheading--*` | H5 / eyebrow labels, product-card titles & vendor |
+| Accent | **DM Sans** | 400 | `--font-accent--*` | Available, rarely used |
+
+Shopify font handles: `archivo_n7`, `dm_sans_n4`, `dm_sans_n5` (set in Theme settings → Typography). Previous pairing (Figtree + Open Sans) retired 2026-07-28 — comparison specimens in [`font-exploration.html`](font-exploration.html).
 
 ⚠️ **`--font-primary--*` does not exist.** ~50 blocks across the template JSONs store `var(--font-primary--family)` as their font value — a leftover from an older setup. It's harmless today (the value is only emitted when a block's type preset is "Custom", and no block combines the two), but **never select it for new work, and don't flip those blocks to the Custom preset** without fixing the font first. Backlog item #1 removes this landmine.
 
@@ -27,13 +29,13 @@ Set globally in **Theme settings → Typography**. Do not rebuild these sizes pe
 
 | Preset | Size | Font | Notes |
 |---|---|---|---|
-| H1 | 56px | Heading (Figtree 700) | Fluid on small screens (auto `clamp()`) |
+| H1 | 56px | Heading (Archivo 700) | Fluid on small screens (auto `clamp()`) |
 | H2 | 48px | Heading | Fluid |
 | H3 | 32px | Heading | |
 | H4 | 24px | Heading | The workhorse heading in practice (62 uses) |
-| H5 | 14px | Subheading (Figtree 400), loose letter-spacing | **This is the eyebrow/kicker style**, not a "small heading" — use it above a heading, sparingly |
-| H6 | 16px | Heading | Bold-label size |
-| Paragraph | 16px | Body (Open Sans 400), loose line-height | |
+| H5 | 14px | Subheading (DM Sans 500), loose letter-spacing | **This is the eyebrow/kicker style**, not a "small heading" — use it above a heading, sparingly. Also sizes the compact product-card rating |
+| H6 | 16px | Heading | Bold-label size (product-card prices use this) |
+| Paragraph | 16px | Body (DM Sans 400), loose line-height | |
 
 Mechanics (for developers): sizes ≥ 48px are automatically converted to fluid `clamp()` values in `snippets/theme-styles-variables.liquid` (~lines 243–352); below 48px they're static rem. There is also a fixed token ramp `--font-size--3xs` (10px) → `--font-size--6xl` (56px) for component CSS.
 

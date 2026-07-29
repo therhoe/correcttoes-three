@@ -164,7 +164,9 @@
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 40,
-        "padding-block-end": 40
+        "padding-block-end": 40,
+        "inset_section": true,
+        "inset_corner_radius": 12
       }
     },
     "video_library": {
