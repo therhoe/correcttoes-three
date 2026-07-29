@@ -17,8 +17,11 @@ The short version:
 
 ## Established conventions (reference implementations)
 
-- **Product cards** ("Edition 3 Merchant", chosen from `docs/product-card-exploration.html`): gallery → vendor eyebrow (12px text block, `{{ closest.product.vendor }}`) → title (15px DM Sans 500) → price + single-star rating (`★ 4.3 | 365 reviews`) in a space-between `_product-card-group` row → swatches. Reference: the `product-card` block in `templates/collection.json`. Rolled out to all commerce grids; `collection.library.json` deliberately keeps content-style cards (no price).
-- **Heroes:** custom "Inset from page edges" checkbox + "Inset corner radius" slider added to `sections/hero.liquid`; enabled (12px) on all hero templates. Media insets to the page-width grid, aligning with the header logo.
+- **Product cards** ("Edition 3 Merchant", chosen from `docs/product-card-exploration.html`): gallery → vendor eyebrow (12px text block, `{{ closest.product.vendor }}`) → title (15px DM Sans 500) → price + shaded-star rating (`★★★★☆ | 365`) in a space-between `_product-card-group` row → swatches. Reference: the `product-card` block in `templates/collection.json`. Rolled out to all commerce grids; `collection.library.json` deliberately keeps content-style cards (no price).
+  - ⚠️ **Editing Edition 3 typography means editing it twice.** `snippets/color-variant-card.liquid` hardcodes a copy (it renders from a section, so it can't read block settings — see `docs/design-system.md` §5b for why this is unfixable).
+- **Color variant cards:** `sections/main-collection.liquid` → "Color variant cards" group, default **off**. Splits a product into one card per colour, each linking to `?variant=`. Splits on option **name** ("Color"), never on swatch data; the `product_type` fence ("Toe Spacers") is required because shoe brands also have a `Color` option. Falls back to one card per product whenever a filter is active. Not yet applied to the homepage `product-list` rows.
+- **Star ratings** live in `snippets/product-rating.liquid` (CSS in `snippets/product-rating-styles.liquid`); `blocks/review.liquid` is a thin wrapper over it. Don't add `| default:` to its boolean params — Liquid's `default` treats `false` as empty.
+- **Heroes:** custom "Inset from page edges" checkbox + "Inset corner radius" slider + "Inset top margin" slider added to `sections/hero.liquid`; enabled (12px radius, 40px top) on all hero templates. Media insets to the page-width grid, aligning with the header logo; the top gap is independent of the side inset.
 - **Sale badges** show computed "Save X%" (`blocks/_product-card-gallery.liquid`), fall back to "Sale" under 5%; badge uses scheme-4 orange. Quick add is ON globally.
 
 ## Working preferences (from the owner)

@@ -94,6 +94,39 @@ Semantic tokens already defined in `snippets/theme-styles-variables.liquid`: `--
 - ❌ Don't hand-edit `config/settings_data.json` or `templates/*.json` while someone has the theme editor open on the connected theme.
 - ℹ️ `docs/` is ignored by the Shopify sync — this file lives only in git.
 
+## 5b. Color variant cards — a duplicated copy of Edition 3 typography ⚠️
+
+`sections/main-collection.liquid` has a **"Color variant cards"** settings group
+(default **off**). When enabled, a product is split into one card per colour, each
+linking to that colour's `?variant=` URL. Rendered by
+`snippets/color-variant-card.liquid`, gated by `snippets/color-variant-option-values.liquid`.
+
+**The hazard:** those cards are rendered from a *section*, not from the block system,
+so they **cannot read the Edition 3 block settings** and instead hardcode the typography.
+
+Why it can't be fixed: the grid renders cards via
+`{% content_for 'block', type: '_product-card', closest.product: product %}`, and that
+API takes a **product only** — there is no `closest.variant`, and `product.selected_variant`
+is only ever set by Shopify (from a `?variant=` URL or a filter). So a colour card cannot
+be a `_product-card` block, and a snippet cannot reach block settings:
+`main-collection` declares no `blocks` in its schema and `collection.json`'s `main` has no
+`block_order`, only `static: true` blocks, which are **not** enumerable via `section.blocks`.
+
+| Element | Value | Source of truth |
+|---|---|---|
+| Vendor eyebrow | `0.75rem`, subheading family, letter-spacing loose, pad-top 6 | `templates/collection.json` → `vendor_eyebrow` |
+| Title | `0.9375rem`, subheading family, letter-spacing normal, pad-top 2 | → `product_title_*` |
+| Colour name | `0.75rem`, subheading family (colour cards only) | n/a — new |
+| Price | preset `h6`, pad-top 4 | → `meta_row_pricing.price_*` |
+| Price+rating row | row, space-between, align centre, gap 8 | → `meta_row_pricing` |
+
+- ✅ Retune Edition 3 in the theme editor? **Also update `snippets/color-variant-card.liquid`.**
+- ✅ Card *chrome* (radius, padding, gap, image ratio) is a section setting, so it does **not** need syncing.
+- ℹ️ Split matches on option **name** ("Color"), not on swatch data — the "Closeout Sale" product
+  has an option named "Available" whose values look like colours and would wrongly expand.
+- ℹ️ The `product_type` fence ("Toe Spacers") is **required**, not defensive: shoe brands
+  (Lems, Vivobarefoot, Luna) also carry a `Color` option.
+
 ## 6. Backlog (known issues, deliberately deferred)
 
 | # | Item | Effort | Risk | Notes |
