@@ -134,7 +134,9 @@
   endfor
 
   assign link_variant = first_available_variant | default: first_variant
-  assign card_url = link_variant.url
+  # Fall back to the product URL if no variant matched this option value at all,
+  # so we can never emit an empty href.
+  assign card_url = link_variant.url | default: product.url
 
   assign on_sale = false
   if color_compare_max > color_price_min

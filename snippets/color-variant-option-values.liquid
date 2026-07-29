@@ -56,7 +56,9 @@
     assign allowlist = allowed_product_types | default: '' | strip
     if allowlist != ''
       assign product_type_matches = false
-      assign this_type = product.type | downcase | strip
+      # product.type is the documented Liquid property; the product_product_type
+      # fallback is free insurance on a load-bearing check.
+      assign this_type = product.type | default: product.product_type | downcase | strip
       assign allowed_types = allowlist | downcase | split: ','
       for allowed_type in allowed_types
         assign allowed_type_clean = allowed_type | strip
