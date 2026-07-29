@@ -1,7 +1,15 @@
 /*
- * Sections Showcase Page
- * This page displays one instance of every section type available in the theme
- * for reference and testing purposes.
+ * ------------------------------------------------------------
+ * Sections reference page.
+ *
+ * One instance of every theme section that is legal on a page
+ * template. Group 1 = sections currently used on the site.
+ * Group 2 = sections shipped with the theme but unused.
+ *
+ * Sections Shopify restricts to other templates or to the
+ * header/footer groups are intentionally absent - see
+ * docs/design-system.md.
+ * ------------------------------------------------------------
  */
 {
   "sections": {
@@ -9,176 +17,155 @@
       "type": "main-page",
       "settings": {}
     },
-    "hero_showcase": {
+    "label_used": {
+      "type": "section",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Group 1 — sections used on this site</h2>",
+            "width": "100%",
+            "alignment": "left",
+            "type_preset": "h3"
+          }
+        }
+      },
+      "block_order": ["heading"],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    },
+    "used_hero": {
       "type": "hero",
       "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
         "section_height": "medium",
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-1",
+        "inset_section": true,
+        "inset_corner_radius": 12
       }
     },
-    "carousel_showcase": {
-      "type": "carousel",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "divider_showcase": {
-      "type": "divider",
-      "settings": {}
-    },
-    "featured_blog_posts_showcase": {
-      "type": "featured-blog-posts",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "featured_product_showcase": {
-      "type": "featured-product",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "featured_product_info_showcase": {
-      "type": "featured-product-information",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "media_with_content_showcase": {
-      "type": "media-with-content",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "product_list_showcase": {
-      "type": "product-list",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "product_recommendations_showcase": {
-      "type": "product-recommendations",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "slideshow_showcase": {
+    "used_slideshow": {
       "type": "slideshow",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
     },
-    "type_filter_showcase": {
-      "type": "type-filter",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+    "used_carousel": {
+      "type": "carousel",
+      "settings": {}
     },
-    "video_library_showcase": {
+    "used_media_with_content": {
+      "type": "media-with-content",
+      "settings": {}
+    },
+    "used_product_list": {
+      "type": "product-list",
+      "settings": {}
+    },
+    "used_product_recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+    },
+    "used_featured_blog_posts": {
+      "type": "featured-blog-posts",
+      "settings": {}
+    },
+    "used_main_collection_list": {
+      "type": "main-collection-list",
+      "settings": {}
+    },
+    "used_video_library": {
       "type": "video-library",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
     },
-    "unused_divider": {
+    "used_section": {
+      "type": "section",
+      "settings": {}
+    },
+    "used_divider": {
       "type": "divider",
       "settings": {}
     },
-    "collection_links_showcase": {
+    "label_unused": {
+      "type": "section",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Group 2 — theme sections not used on this site</h2>",
+            "width": "100%",
+            "alignment": "left",
+            "type_preset": "h3"
+          }
+        }
+      },
+      "block_order": ["heading"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    },
+    "unused_collection_links": {
       "type": "collection-links",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
     },
-    "collection_list_showcase": {
+    "unused_collection_list": {
       "type": "collection-list",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "custom_liquid_showcase": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<!-- Custom Liquid Section -->"
-      }
-    },
-    "footer_showcase": {
-      "type": "footer",
       "settings": {}
     },
-    "footer_utilities_showcase": {
-      "type": "footer-utilities",
+    "unused_featured_product": {
+      "type": "featured-product",
       "settings": {}
     },
-    "header_showcase": {
-      "type": "header",
+    "unused_featured_product_information": {
+      "type": "featured-product-information",
       "settings": {}
     },
-    "header_announcements_showcase": {
-      "type": "header-announcements",
-      "settings": {}
-    },
-    "layered_slideshow_showcase": {
+    "unused_layered_slideshow": {
       "type": "layered-slideshow",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
     },
-    "marquee_showcase": {
+    "unused_marquee": {
       "type": "marquee",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
     },
-    "product_hotspots_showcase": {
+    "unused_product_hotspots": {
       "type": "product-hotspots",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
     },
-    "quick_order_list_showcase": {
-      "type": "quick-order-list",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
-    },
-    "retail_library_showcase": {
+    "unused_retail_library": {
       "type": "retail-library",
-      "settings": {
-        "color_scheme": "scheme-1"
-      }
+      "settings": {}
+    },
+    "unused_custom_liquid": {
+      "type": "custom-liquid",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "hero_showcase",
-    "carousel_showcase",
-    "divider_showcase",
-    "featured_blog_posts_showcase",
-    "featured_product_showcase",
-    "featured_product_info_showcase",
-    "media_with_content_showcase",
-    "product_list_showcase",
-    "product_recommendations_showcase",
-    "slideshow_showcase",
-    "type_filter_showcase",
-    "video_library_showcase",
-    "unused_divider",
-    "collection_links_showcase",
-    "collection_list_showcase",
-    "custom_liquid_showcase",
-    "footer_showcase",
-    "footer_utilities_showcase",
-    "header_showcase",
-    "header_announcements_showcase",
-    "layered_slideshow_showcase",
-    "marquee_showcase",
-    "product_hotspots_showcase",
-    "quick_order_list_showcase",
-    "retail_library_showcase"
+    "label_used",
+    "used_hero",
+    "used_slideshow",
+    "used_carousel",
+    "used_media_with_content",
+    "used_product_list",
+    "used_product_recommendations",
+    "used_featured_blog_posts",
+    "used_main_collection_list",
+    "used_video_library",
+    "used_section",
+    "used_divider",
+    "label_unused",
+    "unused_collection_links",
+    "unused_collection_list",
+    "unused_featured_product",
+    "unused_featured_product_information",
+    "unused_layered_slideshow",
+    "unused_marquee",
+    "unused_product_hotspots",
+    "unused_retail_library",
+    "unused_custom_liquid"
   ]
 }
