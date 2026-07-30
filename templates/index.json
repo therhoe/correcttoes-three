@@ -105,7 +105,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 24,
         "section_width": "full-width",
-        "inset_section": true,
+        "inset_section": false,
         "inset_corner_radius": 12,
         "inset_top_margin": 16,
         "section_height": "medium",
