@@ -33,8 +33,8 @@
             "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
-            "padding-inline-start": 60,
-            "padding-inline-end": 60
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         },
@@ -59,8 +59,8 @@
             "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
-            "padding-inline-start": 60,
-            "padding-inline-end": 60
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         },
@@ -104,8 +104,8 @@
         "horizontal_alignment_flex_direction_column": "flex-end",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 24,
-        "section_width": "full-width",
-        "inset_section": true,
+        "section_width": "page-width",
+        "inset_section": false,
         "inset_corner_radius": 12,
         "inset_top_margin": 16,
         "section_height": "medium",
@@ -378,7 +378,7 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
-        "section_width": "full-width",
+        "section_width": "page-width",
         "horizontal_alignment": "flex-start",
         "gap": 28,
         "color_scheme": "scheme-1",
