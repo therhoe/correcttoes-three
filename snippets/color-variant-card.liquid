@@ -25,7 +25,6 @@
 
     vendor eyebrow : 0.75rem   subheading family, letter-spacing loose, pad-top 6
     title          : 0.9375rem subheading family, letter-spacing normal, pad-top 2
-    color name     : 0.75rem   subheading family (this snippet only)
     rating         : type preset h5, shaded stars, divider, no label, own row
     price          : type preset h6, pad-top 4, own row below the rating
 
@@ -361,31 +360,14 @@
         "
       >
         <a class="contents user-select-text" ref="productTitleLink" href="{{ card_url }}">
-          <p role="heading" aria-level="3">
-            {{- product.title -}}
-            {%- if section.settings.variant_cards_title_mode == 'append' %} &ndash; {{ option_value_name }}{% endif -%}
-          </p>
+          <p role="heading" aria-level="3">{{ product.title }}</p>
         </a>
       </div>
 
-      {%- comment -%} Color name on its own line (default). Needed because otherwise
-      sibling cards differ only by image, and SPORT's values carry the size. {%- endcomment -%}
-      {%- if section.settings.variant_cards_title_mode != 'append' -%}
-        <div
-          class="spacing-style text-block custom custom-typography custom-font-size custom-color text-block--align-left"
-          style="
-            --padding-block-start: 0px; --color: var(--color-foreground);
-            --font-size: 0.75rem; --font-weight: var(--font-subheading--weight);
-            --font-family: var(--font-subheading--family); --text-transform: none;
-            --line-height: var(--line-height--body-normal);
-            --letter-spacing: var(--letter-spacing--body-loose);
-            --text-wrap: pretty; --max-width: var(--max-width--body-normal);
-            --width: 100%; --text-align: left;
-          "
-        >
-          <p>{{ option_value_name }}</p>
-        </div>
-      {%- endif -%}
+      {%- comment -%} The color name is deliberately NOT printed: the card's image already
+      shows the color, so the text was redundant. Sibling cards therefore carry identical
+      visible titles — the color still reaches assistive tech through `accessible_title`
+      on the card link and the gallery link's aria-label. {%- endcomment -%}
 
       {%- comment -%} Rating, directly under the title {%- endcomment -%}
       {% render 'product-rating',
