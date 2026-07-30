@@ -26,8 +26,8 @@
     vendor eyebrow : 0.75rem   subheading family, letter-spacing loose, pad-top 6
     title          : 0.9375rem subheading family, letter-spacing normal, pad-top 2
     color name     : 0.75rem   subheading family (this snippet only)
-    price          : type preset h6, pad-top 4
-    price+rating   : row, space-between, align center, gap 8
+    rating         : type preset h5, shaded stars, divider, no label, own row
+    price          : type preset h6, pad-top 4, own row below the rating
 
   @param {object} product - The product.
   @param {object} section - The section, for its variant_cards_* settings.
@@ -387,50 +387,41 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Price + rating row {%- endcomment -%}
-      <div
-        class="group-block group-block--height-fit group-block--width-fill border-style spacing-style size-style"
-        style="--border-width: 1px; --border-style: none; --border-radius: 0px; --size-style-width: 100%; --size-style-height: fit;"
-      >
-        <div
-          class="group-block-content layout-panel-flex layout-panel-flex--row"
-          style="--flex-direction: row; --flex-wrap: nowrap; --flex-wrap-mobile: wrap; --gap: 8px; --horizontal-alignment: space-between; --vertical-alignment: center; --vertical-alignment-mobile: center;"
-        >
-          <div class="text-block text-left h6 spacing-style" style="--padding-block-start: 4px; --width: fit-content;">
-            <div ref="priceContainer">
-              {%- if on_sale -%}
-                <div class="price__sale">
-                  <span class="price-item__group">
-                    <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
-                    <span class="price-item--sale price">{% render 'format-price', price: color_price_min %}</span>
-                  </span>
-                  <span class="price-item__group">
-                    <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
-                    <span class="price-item--regular compare-at-price">{% render 'format-price', price: color_compare_max %}</span>
-                  </span>
-                </div>
-              {%- else -%}
-                <div class="price__regular">
-                  <span class="price">
-                    {%- render 'format-price', price: color_price_min -%}
-                    {%- if show_price_range %} &ndash; {% render 'format-price', price: color_price_max %}{% endif -%}
-                  </span>
-                </div>
-              {%- endif -%}
-            </div>
-          </div>
+      {%- comment -%} Rating, directly under the title {%- endcomment -%}
+      {% render 'product-rating',
+        product: product,
+        stars_style: 'shaded',
+        show_number: true,
+        show_divider: true,
+        show_review_label: false,
+        rating_color: 'foreground',
+        type_preset: 'h5',
+        alignment: 'left',
+        size_style: '--size-style-width: fit-content;'
+      %}
 
-          {% render 'product-rating',
-            product: product,
-            stars_style: 'shaded',
-            show_number: true,
-            show_divider: true,
-            show_review_label: false,
-            rating_color: 'foreground',
-            type_preset: 'h5',
-            alignment: 'left',
-            size_style: '--size-style-width: fit-content;'
-          %}
+      {%- comment -%} Price {%- endcomment -%}
+      <div class="text-block text-left h6 spacing-style" style="--padding-block-start: 4px; --width: fit-content;">
+        <div ref="priceContainer">
+          {%- if on_sale -%}
+            <div class="price__sale">
+              <span class="price-item__group">
+                <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
+                <span class="price-item--sale price">{% render 'format-price', price: color_price_min %}</span>
+              </span>
+              <span class="price-item__group">
+                <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
+                <span class="price-item--regular compare-at-price">{% render 'format-price', price: color_compare_max %}</span>
+              </span>
+            </div>
+          {%- else -%}
+            <div class="price__regular">
+              <span class="price">
+                {%- render 'format-price', price: color_price_min -%}
+                {%- if show_price_range %} &ndash; {% render 'format-price', price: color_price_max %}{% endif -%}
+              </span>
+            </div>
+          {%- endif -%}
         </div>
       </div>
     </div>
