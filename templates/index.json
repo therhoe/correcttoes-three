@@ -105,7 +105,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 24,
         "section_width": "page-width",
-        "inset_section": true,
+        "inset_section": false,
         "inset_corner_radius": 12,
         "inset_top_margin": 16,
         "section_height": "medium",
@@ -308,8 +308,8 @@
               "settings": {
                 "stars_style": "shaded",
                 "show_number": true,
-                "show_divider": true,
                 "show_review_label": false,
+                "show_divider": true,
                 "rating_color": "foreground",
                 "type_preset": "h5",
                 "width": "fit-content",
@@ -713,8 +713,8 @@
               "settings": {
                 "stars_style": "shaded",
                 "show_number": true,
-                "show_divider": true,
                 "show_review_label": false,
+                "show_divider": true,
                 "rating_color": "foreground",
                 "type_preset": "h5",
                 "width": "fit-content",
@@ -979,8 +979,8 @@
               "settings": {
                 "stars_style": "shaded",
                 "show_number": true,
-                "show_divider": true,
                 "show_review_label": false,
+                "show_divider": true,
                 "rating_color": "foreground",
                 "type_preset": "h5",
                 "width": "fit-content",
@@ -1464,8 +1464,8 @@
               "settings": {
                 "stars_style": "shaded",
                 "show_number": true,
-                "show_divider": true,
                 "show_review_label": false,
+                "show_divider": true,
                 "rating_color": "foreground",
                 "type_preset": "h5",
                 "width": "fit-content",
