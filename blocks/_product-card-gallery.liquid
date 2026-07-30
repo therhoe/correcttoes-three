@@ -21,12 +21,7 @@
           {%- if product.available == false -%}
             {{ 'content.product_badge_sold_out' | t }}
           {%- elsif product.compare_at_price > product.price -%}
-            {%- assign save_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
-            {%- if save_percent >= 5 -%}
-              Save {{ save_percent }}%
-            {%- else -%}
-              {{ 'content.product_badge_sale' | t }}
-            {%- endif -%}
+            {{ 'content.product_badge_sale' | t }}
           {%- endif -%}
         </div>
       {%- endif -%}

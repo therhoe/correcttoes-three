@@ -49,71 +49,20 @@
       {% assign products_per_page = section.settings.products_per_page %}
     {% endif %}
 
-    {%- comment -%}
-      Color variant cards: when a filter is active we must NOT split a product into
-      one card per color. product.options_with_values is not narrowed by storefront
-      filters, so a "Color: Aqua" page would still render Clear and Plum. Shopify
-      already sets selected_variant under a filter, so the normal card is correct.
-      Computed here, above the paginate, so it runs once rather than per product.
-    {%- endcomment -%}
-    {%- liquid
-      assign filters_active = false
-      if section.settings.variant_cards_enabled
-        for filter in collection.filters
-          if filter.active_values.size > 0
-            assign filters_active = true
-            break
-          endif
-          if filter.type == 'price_range'
-            if filter.min_value.value != blank or filter.max_value.value != blank
-              assign filters_active = true
-              break
-            endif
-          endif
-        endfor
-      endif
-    -%}
-
     {% paginate collection.products by products_per_page %}
       {% capture children %}
         {% for product in collection.products %}
-          {% capture color_plan %}
-            {% render 'color-variant-option-values',
-              product: product,
-              option_name: section.settings.variant_cards_option,
-              allowed_product_types: section.settings.variant_cards_product_types,
-              filters_active: filters_active
-            %}
-          {% endcapture %}
-          {% assign color_plan = color_plan | strip %}
-
-          {% if section.settings.variant_cards_enabled == false or color_plan == blank %}
-            <li
-              id="{{ section.id }}-{{ product.id }}"
-              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-              data-page="{{ paginate.current_page }}"
-              data-product-id="{{ product.id }}"
-              ref="cards[]"
-            >
-              {% # theme-check-disable %}
-              {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
-              {% # theme-check-enable %}
-            </li>
-          {% else %}
-            {% assign product_index0 = forloop.index0 %}
-            {% assign color_entries = color_plan | split: '~~' %}
-            {% for color_entry in color_entries %}
-              {% assign entry_parts = color_entry | split: '||' %}
-              {% render 'color-variant-card',
-                product: product,
-                section: section,
-                option_position: entry_parts[0],
-                option_value_name: entry_parts[1],
-                paginate: paginate,
-                wrapper_index0: product_index0
-              %}
-            {% endfor %}
-          {% endif %}
+          <li
+            id="{{ section.id }}-{{ product.id }}"
+            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+            data-page="{{ paginate.current_page }}"
+            data-product-id="{{ product.id }}"
+            ref="cards[]"
+          >
+            {% # theme-check-disable %}
+            {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+            {% # theme-check-enable %}
+          </li>
         {% endfor %}
       {% endcapture %}
 
@@ -227,127 +176,6 @@
       "label": "Open products in a slide-out drawer",
       "info": "Clicking a product card (or its Details button) opens the product info in a drawer instead of going to the product page. Add the 'Product details button' block to the product card to show the button.",
       "default": false
-    },
-    {
-      "type": "header",
-      "content": "Color variant cards"
-    },
-    {
-      "type": "checkbox",
-      "id": "variant_cards_enabled",
-      "label": "Show one card per color",
-      "info": "Splits a product into a separate card for each of its colors, each linking to that color's variant. Products without the option below are unaffected. Turns itself off for a product while a filter is applied, since the filter already picks the color.",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "variant_cards_option",
-      "label": "Option to split on",
-      "info": "Matched against the product's option names, ignoring case. Products that do not have this option, or that have only one value for it, keep a single card.",
-      "default": "Color",
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "text",
-      "id": "variant_cards_product_types",
-      "label": "Limit to product types",
-      "info": "Comma-separated, ignoring case. Required to keep shoe brands out, since they also have a Color option. Leave empty to apply to every product type.",
-      "default": "Toe Spacers",
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "select",
-      "id": "variant_cards_title_mode",
-      "label": "Show the color name",
-      "options": [
-        {
-          "value": "separate_line",
-          "label": "On its own line"
-        },
-        {
-          "value": "append",
-          "label": "After the product title"
-        }
-      ],
-      "info": "Titles are clamped to two lines, so appending a long color name to an already-long title can clip it.",
-      "default": "separate_line",
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "select",
-      "id": "variant_cards_image_ratio",
-      "label": "Image aspect ratio",
-      "options": [
-        {
-          "value": "adapt",
-          "label": "t:options.auto"
-        },
-        {
-          "value": "portrait",
-          "label": "t:options.portrait"
-        },
-        {
-          "value": "square",
-          "label": "t:options.square"
-        },
-        {
-          "value": "landscape",
-          "label": "t:options.landscape"
-        }
-      ],
-      "default": "square",
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "range",
-      "id": "variant_cards_corner_radius",
-      "label": "Card corner radius",
-      "min": 0,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 8,
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "range",
-      "id": "variant_cards_padding_block",
-      "label": "Card padding, top and bottom",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 11,
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "range",
-      "id": "variant_cards_padding_inline",
-      "label": "Card padding, left and right",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 12,
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "range",
-      "id": "variant_cards_gap",
-      "label": "Gap between card elements",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 4,
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "variant_cards_show_quick_add",
-      "label": "Show quick add on color cards",
-      "default": true,
-      "visible_if": "{{ section.settings.variant_cards_enabled }}"
     },
     {
       "type": "header",

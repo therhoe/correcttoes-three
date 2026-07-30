@@ -457,7 +457,6 @@
     --hero-border-style: {{ section.settings.border }};
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-inset-radius: {{ section.settings.inset_corner_radius | default: 0 }}px;
-    --hero-inset-top-margin: {{ section.settings.inset_top_margin | default: 40 }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
     {% if section.settings.section_height == 'custom' %}
@@ -586,30 +585,17 @@
     margin so it sits apart from the header.
   */
   .hero--inset {
-    margin-block-start: var(--hero-inset-top-margin);
-    position: relative;
-  }
-
-  .hero--inset::before {
-    content: '';
-    position: absolute;
-    top: calc(-1 * var(--hero-inset-top-margin));
-    left: 0;
-    right: 0;
-    height: var(--hero-inset-top-margin);
-    background: inherit;
-    pointer-events: none;
+    margin-block-start: var(--page-margin);
   }
 
   /* Keep full-screen height accurate for a first-section hero by counting the added top margin */
   body:has(> #header-group > .header-section > #header-component) .hero-wrapper:first-child .hero--inset {
-    --hero-height-offset: calc(var(--header-group-height, 0px) + var(--hero-inset-top-margin));
+    --hero-height-offset: calc(var(--header-group-height, 0px) + var(--page-margin));
   }
 
   .hero--inset .hero__media-grid {
     /* Matches the page grid's center column: page margin on small screens, centered page-width column on large */
     inset-inline: max(var(--page-margin), calc((100% - var(--page-width)) / 2 + var(--page-margin)));
-    inset-block: 0;
     border-radius: var(--hero-inset-radius, 0);
     overflow: hidden;
   }
@@ -656,7 +642,6 @@
   .hero__media-wrapper {
     overflow: hidden;
     position: relative;
-    height: 100%;
   }
 
   .hero__media {
@@ -1154,18 +1139,6 @@
       "step": 1,
       "unit": "px",
       "default": 0,
-      "visible_if": "{{ section.settings.inset_section }}"
-    },
-    {
-      "type": "range",
-      "id": "inset_top_margin",
-      "label": "Inset top margin",
-      "info": "Space between the header and the inset media. Side margins always match the page grid.",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 40,
       "visible_if": "{{ section.settings.inset_section }}"
     },
     {
