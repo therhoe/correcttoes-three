@@ -116,6 +116,7 @@ be a `_product-card` block, and a snippet cannot reach block settings:
 |---|---|---|
 | Vendor eyebrow | `0.75rem`, subheading family, letter-spacing loose, pad-top 6 | `templates/collection.json` → `vendor_eyebrow` |
 | Title | `0.9375rem`, subheading family, letter-spacing normal, pad-top 2 | → `product_title_*` |
+| Colour name | `0.75rem`, subheading family (colour cards only) | n/a — new |
 | Rating | preset `h5`, shaded stars, divider, no "reviews" label — own row under the title | → `review_*` |
 | Price | preset `h6`, pad-top 4 — own row under the rating | → `price_*` |
 

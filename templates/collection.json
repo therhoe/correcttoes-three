@@ -406,6 +406,7 @@
         "variant_cards_enabled": true,
         "variant_cards_option": "Color",
         "variant_cards_product_types": "Toe Spacers",
+        "variant_cards_title_mode": "separate_line",
         "variant_cards_image_ratio": "square",
         "variant_cards_corner_radius": 8,
         "variant_cards_padding_block": 11,
