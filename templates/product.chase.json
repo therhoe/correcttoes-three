@@ -134,6 +134,19 @@
                   },
                   "blocks": {}
                 },
+                "review_nQhcQq": {
+                  "type": "review",
+                  "name": "t:names.product_review_stars",
+                  "settings": {
+                    "stars_style": "shaded",
+                    "show_number": true,
+                    "rating_color": "primary",
+                    "type_preset": "paragraph",
+                    "width": "100%",
+                    "alignment": "left"
+                  },
+                  "blocks": {}
+                },
                 "price_tVjtKg": {
                   "type": "price",
                   "settings": {
@@ -159,6 +172,7 @@
               },
               "block_order": [
                 "text_xrnftG",
+                "review_nQhcQq",
                 "price_tVjtKg"
               ]
             },
@@ -183,7 +197,7 @@
               "type": "text",
               "name": "Product description",
               "settings": {
-                "text": "",
+                "text": "{{ closest.product.description }}",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
