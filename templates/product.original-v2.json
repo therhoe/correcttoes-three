@@ -171,15 +171,41 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "text_Knemw8": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>{{ closest.product.vendor }}</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h4",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
                 "text_xrnftG": {
                   "type": "text",
                   "name": "Product title",
                   "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "text": "<h3>{{ closest.product.title }}</h3>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "left",
-                    "type_preset": "h3",
+                    "type_preset": "rte",
                     "font": "var(--font-primary--family)",
                     "font_size": "",
                     "line_height": "normal",
@@ -201,7 +227,7 @@
                   "type": "group",
                   "name": "t:names.group",
                   "settings": {
-                    "content_direction": "column",
+                    "content_direction": "row",
                     "vertical_on_mobile": true,
                     "horizontal_alignment": "space-between",
                     "vertical_alignment": "center",
@@ -239,6 +265,7 @@
                   "blocks": {
                     "judge_me_reviews_preview_badge_6EeAwp": {
                       "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+                      "disabled": true,
                       "settings": {}
                     },
                     "price_iNRQyp": {
@@ -263,11 +290,126 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
+                    },
+                    "group_g9EMVA": {
+                      "type": "group",
+                      "name": "t:names.group",
+                      "settings": {
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fit-content",
+                        "custom_width": 100,
+                        "width_mobile": "fit-content",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
+                        "inherit_color_scheme": false,
+                        "color_scheme": "scheme-2",
+                        "background_media": "none",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 4,
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "placeholder": "",
+                        "padding-block-start": 8,
+                        "padding-block-end": 8,
+                        "padding-inline-start": 36,
+                        "padding-inline-end": 36
+                      },
+                      "blocks": {
+                        "popup_link_7VaxrK": {
+                          "type": "popup-link",
+                          "name": "t:names.popup_link",
+                          "settings": {
+                            "behavior": "default",
+                            "heading": "HSA / FSA",
+                            "type_preset": "",
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {
+                            "text_iQyTWA": {
+                              "type": "text",
+                              "settings": {
+                                "text": "<h4>Correct Toes may be eligible for HSA/FSA reimbursement when used to treat a qualifying medical condition.</h4>",
+                                "width": "fit-content",
+                                "max_width": "normal",
+                                "alignment": "left",
+                                "type_preset": "rte",
+                                "font": "var(--font-body--family)",
+                                "font_size": "1rem",
+                                "line_height": "normal",
+                                "letter_spacing": "normal",
+                                "case": "none",
+                                "wrap": "pretty",
+                                "color": "var(--color-foreground)",
+                                "background": false,
+                                "background_color": "#00000026",
+                                "corner_radius": 0,
+                                "padding-block-start": 0,
+                                "padding-block-end": 16,
+                                "padding-inline-start": 0,
+                                "padding-inline-end": 0
+                              },
+                              "blocks": {}
+                            },
+                            "text_VNj8B8": {
+                              "type": "text",
+                              "settings": {
+                                "text": "<p>Eligibility varies by provider, and a Letter of Medical Necessity may be required. <br/><br/>Please check with your plan administrator before purchasing.</p><ul><li>Keep the itemized receipt showing the product, purchase date, amount, and retailer.</li><li>If requested, obtain a Letter of Medical Necessity from a podiatrist, physician, physical therapist, or other qualified provider. The letter should identify:<br/><br/>- The diagnosed condition<br/>- Why Correct Toes is recommended<br/>- The expected duration of treatment</li></ul><p></p><ul><li>Submit the receipt and Letter of Medical Necessity through the HSA/FSA administrator’s reimbursement portal.</li><li>The plan administrator reviews the claim and issues reimbursement if approved.|</li></ul><p>Correct Toes does not provide the Letter of Medical Necessity. Please consult with your physician.</p>",
+                                "width": "fit-content",
+                                "max_width": "normal",
+                                "alignment": "left",
+                                "type_preset": "rte",
+                                "font": "var(--font-body--family)",
+                                "font_size": "1rem",
+                                "line_height": "normal",
+                                "letter_spacing": "normal",
+                                "case": "none",
+                                "wrap": "pretty",
+                                "color": "var(--color-foreground)",
+                                "background": false,
+                                "background_color": "#00000026",
+                                "corner_radius": 0,
+                                "padding-block-start": 0,
+                                "padding-block-end": 0,
+                                "padding-inline-start": 0,
+                                "padding-inline-end": 0
+                              },
+                              "blocks": {}
+                            }
+                          },
+                          "block_order": [
+                            "text_iQyTWA",
+                            "text_VNj8B8"
+                          ]
+                        }
+                      },
+                      "block_order": [
+                        "popup_link_7VaxrK"
+                      ]
                     }
                   },
                   "block_order": [
                     "judge_me_reviews_preview_badge_6EeAwp",
-                    "price_iNRQyp"
+                    "price_iNRQyp",
+                    "group_g9EMVA"
                   ]
                 },
                 "divider_rhe4hN": {
@@ -285,123 +427,10 @@
                 }
               },
               "block_order": [
+                "text_Knemw8",
                 "text_xrnftG",
                 "group_pUxbfB",
                 "divider_rhe4hN"
-              ]
-            },
-            "group_XJ7CPw": {
-              "type": "group",
-              "name": "t:names.group",
-              "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": false,
-                "color_scheme": "scheme-2",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 4,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "link": "",
-                "open_in_new_tab": false,
-                "placeholder": "",
-                "padding-block-start": 8,
-                "padding-block-end": 8,
-                "padding-inline-start": 36,
-                "padding-inline-end": 36
-              },
-              "blocks": {
-                "popup_link_7VaxrK": {
-                  "type": "popup-link",
-                  "name": "t:names.popup_link",
-                  "settings": {
-                    "behavior": "default",
-                    "heading": "HSA / FSA Reimbursement",
-                    "type_preset": "",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {
-                    "text_iQyTWA": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<h4>Correct Toes may be eligible for HSA/FSA reimbursement when used to treat a qualifying medical condition.</h4>",
-                        "width": "fit-content",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 16,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    },
-                    "text_VNj8B8": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>Eligibility varies by provider, and a Letter of Medical Necessity may be required. <br/><br/>Please check with your plan administrator before purchasing.</p><ul><li>Keep the itemized receipt showing the product, purchase date, amount, and retailer.</li><li>If requested, obtain a Letter of Medical Necessity from a podiatrist, physician, physical therapist, or other qualified provider. The letter should identify:<br/><br/>- The diagnosed condition<br/>- Why Correct Toes is recommended<br/>- The expected duration of treatment</li></ul><p></p><ul><li>Submit the receipt and Letter of Medical Necessity through the HSA/FSA administrator’s reimbursement portal.</li><li>The plan administrator reviews the claim and issues reimbursement if approved.|</li></ul><p>Correct Toes does not provide the Letter of Medical Necessity. Please consult with your physician.</p>",
-                        "width": "fit-content",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "text_iQyTWA",
-                    "text_VNj8B8"
-                  ]
-                }
-              },
-              "block_order": [
-                "popup_link_7VaxrK"
               ]
             },
             "group_eMTBnq": {
@@ -843,7 +872,6 @@
           },
           "block_order": [
             "group_icgrde",
-            "group_XJ7CPw",
             "group_eMTBnq",
             "text_fV4tgD",
             "variant_picker_R3rGDr",
