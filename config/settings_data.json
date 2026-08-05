@@ -80,7 +80,7 @@
     "quick_add": false,
     "mobile_quick_add": false,
     "show_second_image_on_hover": false,
-    "product_card_carousel": false,
+    "product_card_carousel": true,
     "product_corner_radius": 0,
     "card_corner_radius": 4,
     "show_variant_image": true,

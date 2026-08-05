@@ -82,7 +82,6 @@
       "blocks": {
         "filters": {
           "type": "filters",
-          "disabled": true,
           "static": true,
           "settings": {
             "enable_filtering": true,
@@ -191,7 +190,7 @@
                 "wrap": "pretty",
                 "color": "var(--color-foreground)",
                 "background": true,
-                "background_color": "#4671FF1A",
+                "background_color": "#4671ff1a",
                 "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -235,7 +234,7 @@
       },
       "settings": {
         "layout_type": "grid",
-        "product_card_size": "large",
+        "product_card_size": "small",
         "mobile_product_card_size": "small",
         "enable_infinite_scroll": true,
         "products_per_page": 24,

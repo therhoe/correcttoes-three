@@ -12,20 +12,20 @@
     "main": {
       "type": "main-blog-sidebar",
       "settings": {
+        "group_by_tags": true,
         "posts_in_sidebar": 50,
         "show_date_in_sidebar": true,
         "sidebar_position": "left",
         "sticky_sidebar": true,
-        "group_by_tags": true,
         "sidebar_title": "",
         "sidebar_gap": 80,
         "sidebar_top_offset": 40,
         "sidebar_font_size": 14,
-        "sidebar_text_color": "#00000000",
-        "sidebar_background_color": "#00000000",
+        "sidebar_text_color": "rgba(0,0,0,0)",
+        "sidebar_background_color": "rgba(0,0,0,0)",
         "show_date_in_body": true,
         "show_author_in_body": false,
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-3",
         "padding-block-start": 40,
         "padding-block-end": 80
       }
